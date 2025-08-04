@@ -9,7 +9,7 @@
       </button>
       <span class="name" v-if="id != null">{{user_name}} 님</span>
       <!-- 네비게이션 메뉴 -->
-      <ul :class="['nav-list', { 'nav-open': menuOpen }]" v-show="id === 'test'">
+      <ul :class="['nav-list', { 'nav-open': menuOpen }]" v-show="id === 'test' || id === 'kstzz1004'">
         <li>
             <router-link to="/AdminMainForm" @click="closeMenu">관리자메인</router-link>
         </li>

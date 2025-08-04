@@ -1,132 +1,169 @@
 <template>
-  <div>
-    <h4>
-      <img class="image" src="../images/circle.png" alt="이미지">
-      에너지 수요관리 시스템</h4>
-    <div>
-      <p class="bold">이번달 전력 사용량 <router-link to="/" class="sublink1">자세히 >></router-link></p>
+  <div class="login-container">
+    <h4 class="title">
+      SCSystem
+    </h4>
+    <h4 class="login">Log In</h4>
+    <form class="form" @submit.prevent="handleLogin">
       <div class="form-group">
         <div class="input-group">
-          <label class="labelHome" for="ami_meter">HOME</label>
-          <input class="form-control" type="text" id="ami_meter" v-model="ami_meter" value="1234kWh" readonly/>
-          <div class="input-group-append">
-            <span class="input-group-text">kWh</span>
-          </div>
+          <label class="labelId" for="id">ID</label>
+          <input class="form-control" type="text" id="id" v-model="id" placeholder="" />
         </div>
       </div>
       <div class="form-group">
         <div class="input-group">
-          <label class="labelEv" for="ev_meter">EV</label>
-          <input class="form-control" type="text" id="ev_meter" v-model="ev_meter"  value="1234kWh" readonly/>
-          <div class="input-group-append">
-            <span class="input-group-text">kWh</span>
-          </div>
+          <label class="labelPw" for="password">PW</label>
+          <input class="form-control" type="password" id="password" v-model="password" placeholder="" />
         </div>
       </div>
-      <p class="small">* {{today}} 기준</p> 
-    </div>
-    <div>
-      <p class="bold">오늘 최대 사용 전력 <router-link to="/" class="sublink1">자세히 >></router-link></p>
-      <div class="form-group">
-        <div class="input-group">
-          <label class="labelHome" for="max_power_ami">HOME</label>
-          <input class="form-control" type="text" id="max_power_ami" v-model="max_power_ami" value="1234kWh" readonly/>
-          <div class="input-group-append">
-            <span class="input-group-text">kW</span>
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="input-group">
-          <label class="labelEv" for="max_power_ev">EV</label>
-          <input class="form-control" type="text" id="max_power_ev" v-model="max_power_ev"  value="1234kWh" readonly/>
-          <div class="input-group-append">
-            <span class="input-group-text">kW</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <p class="small">* {{today}} 기준</p>
+      <button class="loginBtn" type="submit">로그인</button>
+    </form>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
 import axios from "axios";
-
 export default {
-  setup() {
-    const ami_meter = ref();
-    const ev_meter = ref();
-    const max_power_ami = ref();
-    const max_power_ev = ref();
-    const today = ref();
-    const initValue = () => {
-      console.log(localStorage.getItem('id'));
-      axios.post("http://localhost/api/", {
-          id: localStorage.getItem('id'),
-      })
-      .then(response=>{ 
-        console.log(response);
-        console.log(response.data);
-        ami_meter.value = response.data.ami_meter;
-        ev_meter.value = response.data.ev_meter;
-        max_power_ami.value = response.data.max_power_ami;
-        max_power_ev.value = response.data.max_power_ev;
-        today.value = response.data.today;
-      })
-      .catch(response=>{
-        console.log("잘못된 요청입니다 ", response);
-        
-      });
-      
-    };
-    onMounted( async()=>{
-      initValue();
-    });
-
+  name: "LoginForm",
+  data() {
     return {
-      ami_meter,
-      ev_meter,
-      max_power_ami,
-      max_power_ev,
-      today,
+      id: "", // 사용자 입력 아이디
+      password: "", // 사용자 입력 비밀번호
     };
-  }
-}
-  
+  },
+  methods: {
+    async handleLogin() {
+      const options = {
+                headers: {
+                        'content-type' : 'application/json',
+                    }
+                }
+      if (this.id && this.password) {
+        console.log(`로그인 시도: ${this.id}`);
+      } else {
+        alert("아이디와 비밀번호를 입력해주세요.");
+        return;
+      }
+      // API 엔드포인트 URL
+      const url = "http://localhost:8080/api/manager/login";
+
+      try {
+        // POST 요청으로 로그인 시도
+        const response = await axios.post(url, {
+          id: this.id,
+          password: this.password,
+        }, options);
+
+        // 서버로부터 받은 응답 처리
+        if (response.status === 200) {
+          console.log(response.data); 
+          if(response.data){
+            this.$emit("login-success", response.data.id, response.data.name);
+            if(response.data.id === 'test' || response.data.id === 'kstzz1004'){
+              this.$router.push("/AdminMainForm");
+            }else{
+              this.$router.push("/UserMainForm");
+            }
+          }else{
+            alert("아이디 또는 비밀번호를 확인해주세요.");
+          }
+        } else {
+          alert("로그인에 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("로그인 요청 중 에러 발생:", error);
+        alert("로그인 요청 중 문제가 발생했습니다. 다시 시도해주세요.");
+      }
+    },
+  },
+};
 </script>
 
 <style>
-.labelHome{
+.title{
+  text-align: center;
+  margin-top: 40px;
+}
+.form{
+  margin-top: 40px;
+}
+.labelId{
     vertical-align: middle !important;
     padding-right: 28px;
     padding-left: 10px;
     text-align: center;
 }
-.labelEv{
+.labelPw{
     vertical-align: middle !important;
-    padding-right: 54px;
+    padding-right: 20px;
     padding-left: 10px;
     text-align: center;
 }
-.image {
-  width:60px;
-  vertical-align:middle;
+.login{
+      text-align: center;
+      margin-top:40px;
+}
+.image-container {
+  display: flex; /* Flexbox로 부모 요소 설정 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  margin: 0; /* 여백 제거 */
+  padding-top: 40px;
 }
 
-.sublink1{
-  padding-left:100px;
-  text-decoration-line: underline;
-  font-weight: normal;
-  font-size: 10pt;
-  color: black;
+.image-container img {
+  max-width: 100%; /* 이미지가 부모의 너비를 초과하지 않도록 설정 */
+  height: auto; /* 이미지 비율 유지 */
 }
-.small{
-  font-size: 10pt;
+
+.login-container {
+  max-width: 400px;
+  margin: 0px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 }
-.bold{
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
   font-weight: bold;
-  margin-top:40px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    border: 0px solid #ccc;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.1);
+  }
 }
 </style>

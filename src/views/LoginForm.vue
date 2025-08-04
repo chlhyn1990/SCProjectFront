@@ -60,7 +60,7 @@ export default {
           console.log(response.data); 
           if(response.data){
             this.$emit("login-success", response.data.id, response.data.name);
-            if(response.data.id === 'test'){
+            if(response.data.id === 'test' || response.data.id === 'kstzz1004'){
               this.$router.push("/AdminMainForm");
             }else{
               this.$router.push("/UserMainForm");
