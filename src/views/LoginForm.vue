@@ -24,6 +24,9 @@
 
 <script>
 import axios from "axios";
+import {onMounted} from 'vue';
+import { useRouter } from 'vue-router';
+
 export default {
   name: "LoginForm",
   data() {
@@ -31,6 +34,18 @@ export default {
       id: "", // 사용자 입력 아이디
       password: "", // 사용자 입력 비밀번호
     };
+  },
+  setup(){
+    const router = useRouter();
+    onMounted(() => {
+      const id = localStorage.getItem("id");
+      if(id != null){
+          if(id === 'test' || id === 'kstzz1004')
+            router.push("/AdminMainForm");
+          else
+            router.push("/UserMainForm");
+      }
+    });
   },
   methods: {
     async handleLogin() {

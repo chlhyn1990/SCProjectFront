@@ -65,7 +65,8 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
+import { useRouter, useRoute } from 'vue-router';
 import AppFooter from "./components/AppFooter.vue";
 
 export default {
@@ -73,22 +74,43 @@ export default {
   components: {
     AppFooter, // 푸터 컴포넌트 등록
   },
-  methods:{
-    handleLogin(userId, userNm) {
-      this.id = userId; // 로그인 성공한 ID 저장
-      this.user_name = userNm; // 로그인 성공한 ID 저장
-      localStorage.setItem("id", userId); // optional: localStorage에 저장
-      localStorage.setItem("user_name", userNm); // optional: localStorage에 저장
-    },
-  },
   setup() {
+    const router = useRouter();
+    const route = useRoute();
     const id = ref(null); // 반응형 변수로 id 선언
     const user_name = ref(null); // 반응형 변수로 id 선언
+
+    // 라우트 변경 감시
+    watch(
+      () => route.path,
+      () => {
+        checkAuth();
+      }
+    );
+
+    // 컴포넌트가 마운트될 때 id 초기화
+    onMounted(() => {
+      checkAuth();
+    });
+
+    const checkAuth = () => {
+      updateId();
+      if(id.value == null && route.path !== '/') {
+        router.push("/");
+      }
+    };
 
     // 로그인 상태를 확인하고 id를 업데이트
     const updateId = () => {
       id.value = localStorage.getItem("id");
       user_name.value = localStorage.getItem("user_name");
+    };
+
+    const handleLogin = (userId, userNm) => {
+      id.value = userId; // 로그인 성공한 ID 저장
+      user_name.value = userNm; // 로그인 성공한 ID 저장
+      localStorage.setItem("id", userId); // optional: localStorage에 저장
+      localStorage.setItem("user_name", userNm); // optional: localStorage에 저장
     };
 
     // 메뉴 열기/닫기 상태
@@ -119,16 +141,12 @@ export default {
       alert("로그아웃되었습니다");
     };
 
-    // 컴포넌트가 마운트될 때 id 초기화
-    onMounted(() => {
-      updateId();
-    });
-
     return {
       id,
       user_name,
       menuOpen,
       toggleMenu,
+      handleLogin,
       closeMenu,
       closeMenuLogout,
       closeMenuLogin,
@@ -165,7 +183,6 @@ body, html {
   overflow-x: hidden; /* 가로 스크롤 제거 */
   overscroll-behavior: none;
 }
-
 
 #app {
   display: flex;
