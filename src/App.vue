@@ -96,6 +96,7 @@ export default {
     const checkAuth = () => {
       updateId();
       if(id.value == null && route.path !== '/') {
+        alert('로그인 후 이용해주세요');
         router.push("/");
       }
     };
