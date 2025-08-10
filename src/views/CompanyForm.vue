@@ -179,7 +179,8 @@ export default {
       for(var i=0; i<this.tableData.length;i++){
         this.excelData.push({
             idx: this.tableData[i].idx,
-            grade_name: this.tableData[i].grade_name,
+            company_grade_idx: this.tableData[i].company_grade_idx,
+            company_name: this.tableData[i].company_name,
             create_dt: this.tableData[i].create_dt,
             modify_dt: this.tableData[i].modify_dt,
           });
@@ -187,7 +188,7 @@ export default {
       const workBook = Xlsx.utils.book_new();
       const workSheet = Xlsx.utils.json_to_sheet(this.excelData);
       Xlsx.utils.book_append_sheet(workBook, workSheet, 'tableData');
-      Xlsx.writeFile(workBook, '회사등급.xlsx');
+      Xlsx.writeFile(workBook, '회사.xlsx');
     },
   },
   setup() {
