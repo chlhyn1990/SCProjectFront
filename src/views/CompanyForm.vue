@@ -54,17 +54,6 @@
           -->
           <!-- Modal Body -->
           <div class="modal-body">
-            <div class="form-group">
-              <div class="input-group">
-                <label class="labelModal" key="" for="idx">회사코드</label>
-                <input 
-                  type="text" 
-                  id="idx" 
-                  class="form-control"
-                  v-model="selectedIdx"
-                />
-              </div>
-              </div>
               <div class="form-group">
               <div class="input-group">
                 <label class="labelModal" key="" for="company_grade_idx">회사등급</label>
