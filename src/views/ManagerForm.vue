@@ -85,7 +85,7 @@
               <div class="input-group">
                 <label class="labelModal" key="" for="password">비밀번호</label>
                 <input 
-                  type="text" 
+                  type="password" 
                   id="password" 
                   class="form-control"
                   v-model="selectedPassword"
@@ -184,7 +184,7 @@
               <div class="input-group">
                 <label class="labelModal" key="" for="password">비밀번호</label>
                 <input 
-                  type="text" 
+                  type="password" 
                   id="password" 
                   class="form-control"
                   v-model="selectedPassword"
