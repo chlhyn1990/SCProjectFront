@@ -17,7 +17,6 @@
           <th>회사코드</th>
           <th>직원등급</th>
           <th>아이디</th>
-          <th>비밀번호</th>
           <th>이름</th>
           <th>연락처</th>
           <th>등록일</th>
@@ -31,7 +30,6 @@
           <td>{{ row.company_idx }}</td>
           <td>{{ row.manager_grade_idx }}</td>
           <td>{{ row.id }}</td>
-          <td>{{ row.password }}</td>
           <td>
             <button 
               type="button" 
@@ -59,7 +57,7 @@
               <div class="input-group">
                 <label class="labelModal" key="" for="company_idx">회사코드</label>
                 <select class="form-select form-select-lg" id="company_idx" v-model="selectedCompanyIdx">
-                  <option :value=row.idx v-for="(row, index) in tableDataGrade" :key="index">{{row.company_name}}</option>
+                  <option :value=row.idx v-for="(row, index) in tableDataCompany" :key="index">{{row.company_name}}</option>
                 </select>
               </div>
               </div>
@@ -159,7 +157,7 @@
               <div class="input-group">
                 <label class="labelModal" key="" for="company_idx">회사코드</label>
                 <select class="form-select form-select-lg" id="company_idx" v-model="selectedCompanyIdx">
-                  <option :value=row.idx v-for="(row, index) in tableDataGrade" :key="index">{{row.company_name}}</option>
+                  <option :value=row.idx v-for="(row, index) in tableDataCompany" :key="index">{{row.company_name}}</option>
                 </select>
               </div>
               </div>
@@ -248,7 +246,6 @@ export default {
             company_idx: this.tableData[i].company_idx,
             manager_grade_idx: this.tableData[i].manager_grade_idx,
             id: this.tableData[i].id,
-            password: this.tableData[i].password,
             name: this.tableData[i].name,
             phone: this.tableData[i].phone,
             create_dt: this.tableData[i].create_dt,
@@ -258,7 +255,7 @@ export default {
       const workBook = Xlsx.utils.book_new();
       const workSheet = Xlsx.utils.json_to_sheet(this.excelData);
       Xlsx.utils.book_append_sheet(workBook, workSheet, 'tableData');
-      Xlsx.writeFile(workBook, '회사등급.xlsx');
+      Xlsx.writeFile(workBook, '매니저.xlsx');
     },
   },
   setup() {
@@ -291,7 +288,7 @@ export default {
       selectedCompanyIdx.value = row.company_idx; // 선택한 행 데이터 복사
       selectedGrade.value = row.manager_grade_idx; // 선택한 행 데이터 복사
       selectedId.value = row.id; // 선택한 행 데이터 복사
-      selectedPassword.value = row.password; // 선택한 행 데이터 복사
+      selectedPassword.value = ''; // 선택한 행 데이터 복사
       selectedName.value = row.name; // 선택한 행 데이터 복사
       selectedPhone.value = row.phone; // 선택한 행 데이터 복사
       selectedCreateDt.value = row.create_dt; // 선택한 행 데이터 복사
@@ -367,12 +364,12 @@ export default {
                   }
       axios.post(reqUrl, {
             idx: selectedIdx.value,
-            company_idx: selectedGrade.value,
+            company_idx: selectedCompanyIdx.value,
             manager_grade_idx: selectedGrade.value,
-            id: selectedGrade.value,
-            password: selectedGrade.value,
-            name: selectedGrade.value,
-            phone: selectedGrade.value,
+            id: selectedId.value,
+            password: selectedPassword.value,
+            name: selectedName.value,
+            phone: selectedPhone.value,
             create_dt: selectedCreateDt.value,
             modify_dt: selectedModifyDt.value
           }, options)
@@ -413,6 +410,7 @@ export default {
     return {
       tableData,
       tableDataGrade,
+      tableDataCompany,
       openModal,
       saveData,
       deleteData,
