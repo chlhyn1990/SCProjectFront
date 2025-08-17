@@ -7,6 +7,7 @@ import CompanyGradeForm from "../views/CompanyGradeForm.vue";
 import ManagerForm from "../views/ManagerForm.vue";
 import ManagerGradeForm from "../views/ManagerGradeForm.vue";
 import ChargerForm from "../views/ChargerForm.vue";
+import ChargerStationForm from "../views/ChargerStationForm.vue";
 import ChargerModelForm from "../views/ChargerModelForm.vue";
 import ChecklistForm from "../views/ChecklistForm.vue";
 
@@ -21,6 +22,7 @@ const routes = [
   { path: "/ChargerForm", name: "ChargerForm", component: ChargerForm },
   { path: "/ChargerModelForm", name: "ChargerModelForm", component: ChargerModelForm },
   { path: "/ChecklistForm", name: "ChecklistForm", component: ChecklistForm },
+  { path: "/ChargerStationForm", name: "ChargerStationForm", component: ChargerStationForm },
 ];
 
 const router = createRouter({

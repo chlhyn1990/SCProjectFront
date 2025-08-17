@@ -14,25 +14,28 @@
             <router-link to="/AdminMainForm" @click="closeMenu">관리자메인</router-link>
         </li>
         <li>
-            <router-link to="/CompanyForm" @click="closeMenu">회사관리</router-link>
+            <router-link to="/CompanyForm" @click="closeMenu">회사</router-link>
         </li>
         <li>
-            <router-link to="/CompanyGradeForm" @click="closeMenu">회사등급관리</router-link>
+            <router-link to="/CompanyGradeForm" @click="closeMenu">회사등급</router-link>
         </li>
         <li>
-            <router-link to="/ManagerForm" @click="closeMenu">매니저관리</router-link>
+            <router-link to="/ManagerForm" @click="closeMenu">매니저</router-link>
         </li>
         <li>
-            <router-link to="/ManagerGradeForm" @click="closeMenu">매니저등급관리</router-link>
+            <router-link to="/ManagerGradeForm" @click="closeMenu">매니저등급</router-link>
         </li>
         <li>
-            <router-link to="/ChargerForm" @click="closeMenu">충전소관리</router-link>
+            <router-link to="/ChargerModelForm" @click="closeMenu">충전기모델</router-link>
         </li>
         <li>
-            <router-link to="/ChargerModelForm" @click="closeMenu">충전기관리</router-link>
+            <router-link to="/ChargerForm" @click="closeMenu">충전기</router-link>
         </li>
         <li>
-            <router-link to="/ChecklistForm" @click="closeMenu">체크리스트관리</router-link>
+            <router-link to="/ChargerStationForm" @click="closeMenu">충전소</router-link>
+        </li>
+        <li>
+            <router-link to="/ChecklistForm" @click="closeMenu">체크리스트</router-link>
         </li>
         <li>
             <router-link to="/" class="login-btn" @click="closeMenuLogin" v-if="id == null">로그인</router-link>
