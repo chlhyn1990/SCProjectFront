@@ -337,12 +337,12 @@ export default {
     const tableData = ref([]); // 테이블 데이터를 저장할 ref
     const tableDataCompany = ref([]); // 테이블 데이터를 저장할 ref
     const tableDataManager = ref([]); // 테이블 데이터를 저장할 ref
-    const getChargerStationList = "http://localhost:8080/api/chargerStation/list";
-    const getCompanyList = "http://localhost:8080/api/company/list";
-    const getManagerList = "http://localhost:8080/api/manager/list";
-    const insertChargerStation = "http://localhost:8080/api/chargerStation/insert";
-    const updateChargerStation = "http://localhost:8080/api/chargerStation/update";
-    const deleteChargerStation = "http://localhost:8080/api/chargerStation/delete/";
+    const getChargerStationList = process.env.VUE_APP_API_BASE_URL + "/api/chargerStation/list";
+    const getCompanyList = process.env.VUE_APP_API_BASE_URL + "/api/company/list";
+    const getManagerList = process.env.VUE_APP_API_BASE_URL + "/api/manager/list";
+    const insertChargerStation = process.env.VUE_APP_API_BASE_URL + "/api/chargerStation/insert";
+    const updateChargerStation = process.env.VUE_APP_API_BASE_URL + "/api/chargerStation/update";
+    const deleteChargerStation = process.env.VUE_APP_API_BASE_URL + "/api/chargerStation/delete/";
 
     const selectedIdx = ref(); // 선택된 행 데이터
     const selectedCompanyIdx = ref(); // 선택된 행 데이터

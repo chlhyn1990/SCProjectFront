@@ -184,11 +184,11 @@ export default {
     const search = ref("");
     const tableData = ref([]); // 테이블 데이터를 저장할 ref
     const tableDataGrade = ref([]); // 테이블 데이터를 저장할 ref
-    const getCompanyList = "http://localhost:8080/api/company/list";
-    const getCompanyGradeList = "http://localhost:8080/api/companyGrade/list";
-    const insertCompany = "http://localhost:8080/api/company/insert";
-    const updateCompany = "http://localhost:8080/api/company/update";
-    const deleteCompany = "http://localhost:8080/api/company/delete/";
+    const getCompanyList = process.env.VUE_APP_API_BASE_URL + "/api/company/list";
+    const getCompanyGradeList = process.env.VUE_APP_API_BASE_URL + "/api/companyGrade/list";
+    const insertCompany = process.env.VUE_APP_API_BASE_URL + "/api/company/insert";
+    const updateCompany = process.env.VUE_APP_API_BASE_URL + "/api/company/update";
+    const deleteCompany = process.env.VUE_APP_API_BASE_URL + "/api/company/delete/";
     const selectedIdx = ref(); // 선택된 행 데이터
     const selectedGrade = ref(); // 선택된 행 데이터
     const selectedCompanyName = ref(); // 선택된 행 데이터

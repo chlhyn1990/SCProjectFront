@@ -61,7 +61,7 @@ export default {
         return;
       }
       // API 엔드포인트 URL
-      const url = "http://localhost:8080/api/manager/login";
+      const url = process.env.VUE_APP_API_BASE_URL + "/api/manager/login";
 
       try {
         // POST 요청으로 로그인 시도

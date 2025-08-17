@@ -331,13 +331,13 @@ export default {
     const tableDataStation = ref([]); // 테이블 데이터를 저장할 ref
     const tableDataModel = ref([]); // 테이블 데이터를 저장할 ref
     const tableDataManager = ref([]); // 테이블 데이터를 저장할 ref
-    const getChargerList = "http://localhost:8080/api/charger/list";
-    const getChargerStationList = "http://localhost:8080/api/chargerStation/list";
-    const getManagerList = "http://localhost:8080/api/manager/list";
-    const getModelList = "http://localhost:8080/api/chargerModel/list";
-    const insertCharger = "http://localhost:8080/api/charger/insert";
-    const updateCharger = "http://localhost:8080/api/charger/update";
-    const deleteCharger = "http://localhost:8080/api/charger/delete/";
+    const getChargerList = process.env.VUE_APP_API_BASE_URL + "/api/charger/list";
+    const getChargerStationList = process.env.VUE_APP_API_BASE_URL + "/api/chargerStation/list";
+    const getManagerList = process.env.VUE_APP_API_BASE_URL + "/api/manager/list";
+    const getModelList = process.env.VUE_APP_API_BASE_URL + "/api/chargerModel/list";
+    const insertCharger = process.env.VUE_APP_API_BASE_URL + "/api/charger/insert";
+    const updateCharger = process.env.VUE_APP_API_BASE_URL + "/api/charger/update";
+    const deleteCharger = process.env.VUE_APP_API_BASE_URL + "/api/charger/delete/";
 
     const selectedIdx = ref(); // 선택된 행 데이터
     const selectedStationIdx = ref(); // 선택된 행 데이터

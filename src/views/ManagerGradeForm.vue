@@ -164,10 +164,10 @@ export default {
   setup() {
     const search = ref("");
     const tableData = ref([]); // 테이블 데이터를 저장할 ref
-    const getCompanyGradeList = "http://localhost:8080/api/managerGrade/list";
-    const insertCompanyGrade = "http://localhost:8080/api/managerGrade/insert";
-    const updateCompanyGrade = "http://localhost:8080/api/managerGrade/update";
-    const deleteCompanyGrade = "http://localhost:8080/api/managerGrade/delete/";
+    const getCompanyGradeList = process.env.VUE_APP_API_BASE_URL + "/api/managerGrade/list";
+    const insertCompanyGrade = process.env.VUE_APP_API_BASE_URL + "/api/managerGrade/insert";
+    const updateCompanyGrade = process.env.VUE_APP_API_BASE_URL + "/api/managerGrade/update";
+    const deleteCompanyGrade = process.env.VUE_APP_API_BASE_URL + "/api/managerGrade/delete/";
     const selectedIdx = ref(); // 선택된 행 데이터
     const selectedGradeName = ref(); // 선택된 행 데이터
     const selectedCreateDt = ref(); // 선택된 행 데이터

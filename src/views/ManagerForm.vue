@@ -263,12 +263,12 @@ export default {
     const tableData = ref([]); // 테이블 데이터를 저장할 ref
     const tableDataGrade = ref([]); // 테이블 데이터를 저장할 ref
     const tableDataCompany = ref([]); // 테이블 데이터를 저장할 ref
-    const getManagerList = "http://localhost:8080/api/manager/list";
-    const getCompanyList = "http://localhost:8080/api/company/list";
-    const getManagerGradeList = "http://localhost:8080/api/managerGrade/list";
-    const insertManager = "http://localhost:8080/api/manager/insert";
-    const updateManager = "http://localhost:8080/api/manager/update";
-    const deleteManager = "http://localhost:8080/api/manager/delete/";
+    const getManagerList = process.env.VUE_APP_API_BASE_URL + "/api/manager/list";
+    const getCompanyList = process.env.VUE_APP_API_BASE_URL + "/api/company/list";
+    const getManagerGradeList = process.env.VUE_APP_API_BASE_URL + "/api/managerGrade/list";
+    const insertManager = process.env.VUE_APP_API_BASE_URL + "/api/manager/insert";
+    const updateManager = process.env.VUE_APP_API_BASE_URL + "/api/manager/update";
+    const deleteManager = process.env.VUE_APP_API_BASE_URL + "/api/manager/delete/";
 
     const selectedIdx = ref(); // 선택된 행 데이터
     const selectedCompanyIdx = ref(); // 선택된 행 데이터
