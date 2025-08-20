@@ -489,7 +489,6 @@ export default {
       fetchData(); // 컴포넌트 마운트 시 데이터 가져오기
       fetchDataCompany();
       fetchDataManager();
-      console.log("build test!!");
     });
 
     return {
