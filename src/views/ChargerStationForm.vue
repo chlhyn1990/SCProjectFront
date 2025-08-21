@@ -17,11 +17,16 @@
           <th>회사코드</th>
           <th>매니저코드</th>
           <th>충전소명</th>
-          <th>아이디</th>
+          <th>충전기제조사</th>
+          <th>충전사업자</th>
           <th>주소</th>
           <th>상세주소</th>
           <th>위도</th>
           <th>경도</th>
+          <th>충전기전압</th>
+          <th>충전기용량</th>
+          <th>충전기설치유형</th>
+          <th>상태미확인결과</th>
           <th>등록일</th>
           <th>수정일</th>
         </tr>
@@ -43,11 +48,16 @@
             {{ row.name }}
             </button>
           </td>
+          <td>{{ row.chargerCompany }}</td>
           <td>{{ row.station_id }}</td>
           <td>{{ row.addr }}</td>
           <td>{{ row.detail_addr }}</td>
           <td>{{ row.latitude }}</td>
           <td>{{ row.longitude }}</td>
+          <td>{{ row.volt }}</td>
+          <td>{{ row.watt }}</td>
+          <td>{{ row.chargerType }}</td>
+          <td>{{ row.result }}</td>
           <td>{{ row.create_dt }}</td>
           <td>{{ row.modify_dt }}</td>
         </tr>
@@ -77,17 +87,6 @@
             </div>
             <div class="form-group">
               <div class="input-group">
-                <label class="labelModal" key="" for="station_id">아이디</label>
-                <input 
-                  type="text" 
-                  id="station_id" 
-                  class="form-control"
-                  v-model="selectedStationId"
-                />
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group">
                 <label class="labelModal" key="" for="name">충전소명</label>
                 <input 
                   type="text" 
@@ -97,6 +96,29 @@
                 />
               </div>
             </div>
+            <div class="form-group">
+              <div class="input-group">
+                <label class="labelModal" key="" for="chargerCompany">충전기제조사</label>
+                <input 
+                  type="text" 
+                  id="chargerCompany" 
+                  class="form-control"
+                  v-model="selectedChargerCompany"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <label class="labelModal" key="" for="station_id">충전사업자</label>
+                <input 
+                  type="text" 
+                  id="station_id" 
+                  class="form-control"
+                  v-model="selectedStationId"
+                />
+              </div>
+            </div>
+            
             <div class="form-group">
               <div class="input-group">
                 <label class="labelModal" key="" for="addr">주소</label>
@@ -144,25 +166,45 @@
             </div>
             <div class="form-group">
               <div class="input-group">
-                <label class="labelModal" for="create_dt">등록일자</label>
+                <label class="labelModal" key="" for="volt">충전기전압</label>
                 <input 
                   type="text" 
-                  id="create_dt" 
-                  v-model="selectedCreateDt"
+                  id="volt" 
                   class="form-control"
-                  readonly="true"
+                  v-model="selectedVolt"
                 />
               </div>
             </div>
             <div class="form-group">
               <div class="input-group">
-                <label class="labelModal"  for="modify_dt">수정일자</label>
+                <label class="labelModal" key="" for="watt">충전기용량</label>
                 <input 
                   type="text" 
-                  id="modify_dt" 
-                  v-model="selectedModifyDt"
+                  id="watt" 
                   class="form-control"
-                  readonly="true"
+                  v-model="selectedWatt"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <label class="labelModal" key="" for="chargerType">충전기설치유형</label>
+                <input 
+                  type="text" 
+                  id="chargerType" 
+                  class="form-control"
+                  v-model="selectedChargerType"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <label class="labelModal" key="" for="result">상태미확인결과</label>
+                <input 
+                  type="text" 
+                  id="result" 
+                  class="form-control"
+                  v-model="selectedResult"
                 />
               </div>
             </div>
@@ -199,17 +241,6 @@
             </div>
             <div class="form-group">
               <div class="input-group">
-                <label class="labelModal" key="" for="station_id">아이디</label>
-                <input 
-                  type="text" 
-                  id="station_id" 
-                  class="form-control"
-                  v-model="selectedStationId"
-                />
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group">
                 <label class="labelModal" key="" for="name">충전소명</label>
                 <input 
                   type="text" 
@@ -219,6 +250,29 @@
                 />
               </div>
             </div>
+            <div class="form-group">
+              <div class="input-group">
+                <label class="labelModal" key="" for="chargerCompany">충전기제조사</label>
+                <input 
+                  type="text" 
+                  id="chargerCompany" 
+                  class="form-control"
+                  v-model="selectedChargerCompany"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <label class="labelModal" key="" for="station_id">충전사업자</label>
+                <input 
+                  type="text" 
+                  id="station_id" 
+                  class="form-control"
+                  v-model="selectedStationId"
+                />
+              </div>
+            </div>
+            
             <div class="form-group">
               <div class="input-group">
                 <label class="labelModal" key="" for="addr">주소</label>
@@ -268,7 +322,50 @@
                 />
               </div>
             </div>
-          
+            <div class="form-group">
+              <div class="input-group">
+                <label class="labelModal" key="" for="volt">충전기전압</label>
+                <input 
+                  type="text" 
+                  id="volt" 
+                  class="form-control"
+                  v-model="selectedVolt"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <label class="labelModal" key="" for="watt">충전기용량</label>
+                <input 
+                  type="text" 
+                  id="watt" 
+                  class="form-control"
+                  v-model="selectedWatt"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <label class="labelModal" key="" for="chargerType">충전기설치유형</label>
+                <input 
+                  type="text" 
+                  id="chargerType" 
+                  class="form-control"
+                  v-model="selectedChargerType"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <label class="labelModal" key="" for="result">상태미확인결과</label>
+                <input 
+                  type="text" 
+                  id="result" 
+                  class="form-control"
+                  v-model="selectedResult"
+                />
+              </div>
+            </div>
            
           </div>
           <!-- Modal Footer -->
@@ -313,11 +410,16 @@ export default {
             company_idx: this.tableData[i].company_idx,
             manager_idx: this.tableData[i].manager_idx,
             name: this.tableData[i].name,
+            chargerCompany: this.tableData[i].chargerCompany,
             station_id: this.tableData[i].station_id,
             addr: this.tableData[i].addr,
             detail_addr: this.tableData[i].detail_addr,
             latitude: this.tableData[i].latitude,
             longitude: this.tableData[i].longitude,
+            volt: this.tableData[i].volt,
+            watt: this.tableData[i].watt,
+            chargerType: this.tableData[i].chargerType,
+            result: this.tableData[i].result,
             create_dt: this.tableData[i].create_dt,
             modify_dt: this.tableData[i].modify_dt,
           });
@@ -349,12 +451,17 @@ export default {
     const selectedManagerIdx = ref(); // 선택된 행 데이터
     const selectedName = ref(); // 선택된 행 데이터
     const selectedStationId = ref(); // 선택된 행 데이터
+    const selectedChargerCompany = ref();
     const selectedAddr = ref(); // 선택된 행 데이터
     const selectedDetailAddr = ref(); // 선택된 행 데이터
     const selectedSido = ref(); // 선택된 행 데이터
     const selectedSigungu = ref(); // 선택된 행 데이터
     const selectedLatitude = ref(); // 선택된 행 데이터
     const selectedLongitude = ref(); // 선택된 행 데이터
+    const selectedVolt = ref(); // 선택된 행 데이터
+    const selectedWatt = ref(); // 선택된 행 데이터
+    const selectedChargerType = ref(); // 선택된 행 데이터
+    const selectedResult = ref(); // 선택된 행 데이터
     const selectedCreateDt = ref(); // 선택된 행 데이터
     const selectedModifyDt = ref(); // 선택된 행 데이터
     const myModal = ref(null);
@@ -367,10 +474,15 @@ export default {
       selectedManagerIdx.value = row.manager_idx; // 선택한 행 데이터 복사
       selectedName.value = row.name; // 선택한 행 데이터 복사
       selectedStationId.value = row.station_id; // 선택한 행 데이터 복사
+      selectedChargerCompany.value = row.chargerCompany
       selectedAddr.value = row.addr; // 선택한 행 데이터 복사
       selectedDetailAddr.value = row.detail_addr; // 선택한 행 데이터 복사
       selectedLatitude.value = row.latitude; // 선택한 행 데이터 복사
       selectedLongitude.value = row.longitude; // 선택한 행 데이터 복사
+      selectedVolt.value = row.volt; // 선택한 행 데이터 복사
+      selectedWatt.value = row.watt; // 선택한 행 데이터 복사
+      selectedChargerType.value = row.chargerType; // 선택한 행 데이터 복사
+      selectedResult.value = row.result; // 선택한 행 데이터 복사
       selectedCreateDt.value = row.create_dt; // 선택한 행 데이터 복사
       selectedModifyDt.value = row.modify_dt; // 선택한 행 데이터 복사
     };
@@ -447,6 +559,7 @@ export default {
             company_idx: selectedCompanyIdx.value,
             manager_idx: selectedManagerIdx.value,
             station_id: selectedStationId.value,
+            chargerCompany: selectedChargerCompany.value,
             name: selectedName.value,
             addr: selectedAddr.value,
             detail_addr: selectedDetailAddr.value,
@@ -454,6 +567,10 @@ export default {
             sigungu: selectedSigungu.value,
             latitude: selectedLatitude.value,
             longitude: selectedLongitude.value,
+            volt: selectedVolt.value,
+            watt: selectedWatt.value,
+            chargerType: selectedChargerType.value,
+            result: selectedResult.value,
             create_dt: selectedCreateDt.value,
             modify_dt: selectedModifyDt.value
           }, options)
@@ -503,12 +620,17 @@ export default {
       selectedManagerIdx,
       selectedName,
       selectedStationId,
+      selectedChargerCompany,
       selectedAddr,
       selectedDetailAddr,
       selectedSido,
       selectedSigungu,
       selectedLatitude,
       selectedLongitude,
+      selectedVolt,
+      selectedWatt,
+      selectedChargerType,
+      selectedResult,
       selectedCreateDt,
       selectedModifyDt,
       myModal,
@@ -549,7 +671,7 @@ export default {
   text-align: center;
 }
 .modal{
-  margin-top:100px;
+  top:-100px;
 }
 .main-btn{
   float:right;
