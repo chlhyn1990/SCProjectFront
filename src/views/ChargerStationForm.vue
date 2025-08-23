@@ -13,9 +13,9 @@
     <table class="table">
       <thead>
         <tr class="table-dark text-dark">
-          <th>충전소코드</th>
-          <th>회사코드</th>
-          <th>매니저코드</th>
+          <th>인덱스</th>
+          <th>회사</th>
+          <th>매니저</th>
           <th>충전소명</th>
           <th>충전기제조사</th>
           <th>충전사업자</th>
@@ -35,8 +35,8 @@
         <!-- 데이터를 반복하여 동적으로 행 생성 -->
         <tr v-for="(row, index) in tableData" :key="index">
           <td>{{ row.idx }}</td>
-          <td>{{ row.company_idx }}</td>
-          <td>{{ row.manager_idx }}</td>
+          <td>{{ row.company_name }}</td>
+          <td>{{ row.manager_name }}</td>
           <td>
             <button 
               type="button" 
@@ -651,6 +651,10 @@ export default {
 }
 .search-from input{
   text-align: center;
+  display: inline-block;
+  width:200px;
+  margin-left:10px;
+  margin-right:10px;
 }
 .search-from .displayNone{
   display: none;
@@ -732,5 +736,4 @@ select{
     height: 38px;
     text-align: center;
 }
-
 </style>

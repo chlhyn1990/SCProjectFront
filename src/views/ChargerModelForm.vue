@@ -14,7 +14,7 @@
       <thead>
         <tr class="table-dark text-dark">
           <th>인덱스</th>
-          <th>회사코드</th>
+          <th>회사</th>
           <th>모델명</th>
           <th>모델코드</th>
           <th>벤더</th>
@@ -29,7 +29,7 @@
         <!-- 데이터를 반복하여 동적으로 행 생성 -->
         <tr v-for="(row, index) in tableData" :key="index">
           <td>{{ row.idx }}</td>
-          <td>{{ row.company_idx }}</td>
+          <td>{{ row.company_name }}</td>
           <td>
             <button 
               type="button" 
@@ -459,9 +459,14 @@ export default {
 .search-from{
   width:200px;
   margin: 0px auto;
+  text-align: center;
 }
 .search-from input{
   text-align: center;
+  display: inline-block;
+  width:200px;
+  margin-left:10px;
+  margin-right:10px;
 }
 .search-from .displayNone{
   display: none;

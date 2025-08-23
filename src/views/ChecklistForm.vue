@@ -6,30 +6,18 @@
       <a class="btn btn-primary main-btn" data-toggle="modal" data-target="#myModal2" @click="openModal(0)">체크리스트 추가</a>
     </h4>
     <form class="search-from" @submit.prevent="handleSubmit">
-      <table class="tableSearch">
-        <tbody>
-        <tr>
-          <td>
-            <input type="search" v-model="search" placeholder="항목명"/>
-          </td>
-          <td>
-            <input type="search" v-model="search" placeholder="항목명"/>
-          </td>
-          <td>
-            <input type="search" v-model="search" placeholder="항목명"/>
-          </td>
-        </tr>
-        </tbody>
-      </table> 
+            <input type="search" v-model="searchCompany" placeholder="회사명"/>
+            <input type="search" v-model="searchManager" placeholder="매니저명"/>
+            <input type="search" v-model="searchName" placeholder="항목명"/>
       <button class="displayNone" type="submit"></button>
     </form>
   
     <table class="table">
       <thead>
         <tr class="table-dark text-dark">
-          <th>체크리스트코드</th>
-          <th>회사코드</th>
-          <th>매니저코드</th>
+          <th>인덱스</th>
+          <th>회사</th>
+          <th>매니저</th>
           <th>항목명</th>
           <th>행</th>
           <th>열</th>
@@ -43,8 +31,8 @@
         <!-- 데이터를 반복하여 동적으로 행 생성 -->
         <tr v-for="(row, index) in tableData" :key="index">
           <td>{{ row.idx }}</td>
-          <td>{{ row.company_idx }}</td>
-          <td>{{ row.manager_idx }}</td>
+          <td>{{ row.company_name }}</td>
+          <td>{{ row.manager_name }}</td>
           <td>
             <button 
               type="button" 
@@ -303,7 +291,9 @@ export default {
     },
   },
   setup() {
-    const search = ref("");
+    const searchCompany = ref("");
+    const searchManager = ref("");
+    const searchName = ref("");
     const tableData = ref([]); // 테이블 데이터를 저장할 ref
     const tableDataCompany = ref([]); // 테이블 데이터를 저장할 ref
     const tableDataManager = ref([]); // 테이블 데이터를 저장할 ref
@@ -342,14 +332,18 @@ export default {
     };
 
     const handleSubmit = () => {
-      console.log(search.value);
       const options = {
                   headers: {
                           'content-type' : 'application/json',
                           'x-api-key' : ''
                       }
                   }
-      axios.post(getCheckListList+'/'+search.value,options)
+      const search = {
+        searchCompany: searchCompany.value,
+        searchManager: searchManager.value,
+        searchName: searchName.value,
+      }
+      axios.post(getCheckListList, search, options)
       .then(response=>{ 
         if(response.data.length == 0){
           alert('조회 데이터가 없습니다');
@@ -474,7 +468,9 @@ export default {
       selectedModifyDt,
       myModal,
       myModal2,
-      search,
+      searchName,
+      searchCompany,
+      searchManager,
       handleSubmit,
     };
   },
@@ -490,11 +486,16 @@ export default {
   margin: 0px auto;
 }
 .search-from{
-  width:600px;
+  width:800px;
   margin: 0px auto;
+  text-align: center;
 }
 .search-from input{
   text-align: center;
+  display: inline-block;
+  width:200px;
+  margin-left:10px;
+  margin-right:10px;
 }
 .search-from .displayNone{
   display: none;
@@ -576,14 +577,11 @@ select{
     height: 38px;
     text-align: center;
 }
-.tableSearch{
-  border:0px;
-}
-.tableSearch td{
-  border:0px;
-}
-.tableSearch tr{
-  border:0px;
+.searchInput{
+  display: inline-block;
+  width:200px;
+  margin-left:10px;
+  margin-right:10px;
 }
 
 </style>

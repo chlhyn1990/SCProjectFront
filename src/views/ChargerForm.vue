@@ -13,16 +13,16 @@
     <table class="table">
       <thead>
         <tr class="table-dark text-dark">
-          <th>충전기코드</th>
-          <th>충전소코드</th>
-          <th>모델코드</th>
+          <th>인덱스</th>
+          <th>충전소</th>
+          <th>모델</th>
           <th>아이디</th>
           <th>미아이디</th>
           <th>상세위치</th>
           <th>파손부위</th>
           <th>비고</th>
           <th>수리일자</th>
-          <th>매니저코드</th>
+          <th>매니저</th>
           <th>등록일</th>
           <th>수정일</th>
         </tr>
@@ -31,8 +31,8 @@
         <!-- 데이터를 반복하여 동적으로 행 생성 -->
         <tr v-for="(row, index) in tableData" :key="index">
           <td>{{ row.idx }}</td>
-          <td>{{ row.charger_station_idx }}</td>
-          <td>{{ row.charger_model_idx }}</td>
+          <td>{{ row.station_name }}</td>
+          <td>{{ row.model_name }}</td>
           <td>
             <button 
               type="button" 
@@ -49,7 +49,7 @@
           <td>{{ row.broken_part }}</td>
           <td>{{ row.remark }}</td>
           <td>{{ row.fixed_dt }}</td>
-          <td>{{ row.manager_idx }}</td>
+          <td>{{ row.manager_name }}</td>
           <td>{{ row.create_dt }}</td>
           <td>{{ row.modify_dt }}</td>
         </tr>
@@ -347,7 +347,7 @@ export default {
     const selectedDetailPlace = ref(); // 선택된 행 데이터
     const selectedBrokenPart = ref(); // 선택된 행 데이터
     const selectedRemark = ref(); // 선택된 행 데이터
-    const selectedFixedDt = ref(); // 선택된 행 데이터
+    const selectedFixedDt = ref(new Date()); // 선택된 행 데이터
     const selectedManagerIdx = ref(); // 선택된 행 데이터
     const selectedCreateDt = ref(); // 선택된 행 데이터
     const selectedModifyDt = ref(); // 선택된 행 데이터
@@ -546,9 +546,14 @@ export default {
 .search-from{
   width:200px;
   margin: 0px auto;
+  text-align: center;
 }
 .search-from input{
   text-align: center;
+  display: inline-block;
+  width:200px;
+  margin-left:10px;
+  margin-right:10px;
 }
 .search-from .displayNone{
   display: none;

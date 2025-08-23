@@ -13,8 +13,8 @@
     <table class="table">
       <thead>
         <tr class="table-dark text-dark">
-          <th>매니저코드</th>
-          <th>회사코드</th>
+          <th>인덱스</th>
+          <th>회사</th>
           <th>직원등급</th>
           <th>아이디</th>
           <th>이름</th>
@@ -27,8 +27,8 @@
         <!-- 데이터를 반복하여 동적으로 행 생성 -->
         <tr v-for="(row, index) in tableData" :key="index">
           <td>{{ row.idx }}</td>
-          <td>{{ row.company_idx }}</td>
-          <td>{{ row.manager_grade_idx }}</td>
+          <td>{{ row.company_name }}</td>
+          <td>{{ row.manager_grade_name }}</td>
           <td>{{ row.id }}</td>
           <td>
             <button 
@@ -319,6 +319,7 @@ export default {
     const fetchData = () => {
       axios.post(getManagerList)
       .then(response=>{ 
+        console.log(response.data);
         tableData.value = response.data; // 서버에서 받아온 데이터를 테이블에 반영
       })
       .catch(response=>{
@@ -436,9 +437,14 @@ export default {
 .search-from{
   width:200px;
   margin: 0px auto;
+  text-align: center;
 }
 .search-from input{
   text-align: center;
+  display: inline-block;
+  width:200px;
+  margin-left:10px;
+  margin-right:10px;
 }
 .search-from .displayNone{
   display: none;

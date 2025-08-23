@@ -13,7 +13,7 @@
     <table class="table">
       <thead>
         <tr class="table-dark text-dark">
-          <th>등급코드</th>
+          <th>인덱스</th>
           <th>등급명</th>
           <th>등록일</th>
           <th>수정일</th>
@@ -288,9 +288,14 @@ export default {
 .search-from{
   width:200px;
   margin: 0px auto;
+  text-align: center;
 }
 .search-from input{
   text-align: center;
+  display: inline-block;
+  width:200px;
+  margin-left:10px;
+  margin-right:10px;
 }
 .search-from .displayNone{
   display: none;

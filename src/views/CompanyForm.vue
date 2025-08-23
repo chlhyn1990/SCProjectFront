@@ -13,7 +13,7 @@
     <table class="table">
       <thead>
         <tr class="table-dark text-dark">
-          <th>회사코드</th>
+          <th>인덱스</th>
           <th>회사등급</th>
           <th>회사명</th>
           <th>등록일</th>
@@ -24,7 +24,7 @@
         <!-- 데이터를 반복하여 동적으로 행 생성 -->
         <tr v-for="(row, index) in tableData" :key="index">
           <td>{{ row.idx }}</td>
-          <td>{{ row.company_grade_idx }}</td>
+          <td>{{ row.grade_name }}</td>
           <td>
             <button 
               type="button" 
@@ -168,7 +168,7 @@ export default {
       for(var i=0; i<this.tableData.length;i++){
         this.excelData.push({
             idx: this.tableData[i].idx,
-            company_grade_idx: this.tableData[i].company_grade_idx,
+            grade_name: this.tableData[i].grade_name,
             company_name: this.tableData[i].company_name,
             create_dt: this.tableData[i].create_dt,
             modify_dt: this.tableData[i].modify_dt,
@@ -326,9 +326,14 @@ export default {
 .search-from{
   width:200px;
   margin: 0px auto;
+  text-align: center;
 }
 .search-from input{
   text-align: center;
+  display: inline-block;
+  width:200px;
+  margin-left:10px;
+  margin-right:10px;
 }
 .search-from .displayNone{
   display: none;
