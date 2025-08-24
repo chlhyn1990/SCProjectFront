@@ -287,7 +287,7 @@ export default {
       const workBook = Xlsx.utils.book_new();
       const workSheet = Xlsx.utils.json_to_sheet(this.excelData);
       Xlsx.utils.book_append_sheet(workBook, workSheet, 'tableData');
-      Xlsx.writeFile(workBook, '체크리스트.xlsx');
+      Xlsx.writeFile(workBook, '체크리스트.xlsx'); 
     },
   },
   setup() {
