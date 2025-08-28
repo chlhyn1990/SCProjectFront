@@ -306,15 +306,15 @@ export default {
       for(var i=0; i<this.tableData.length;i++){
         this.excelData.push({
             idx: this.tableData[i].idx,
-            charger_station_idx: this.tableData[i].charger_station_idx,
-            charger_model_idx: this.tableData[i].charger_model_idx,
+            station_name: this.tableData[i].station_name,
+            model_name: this.tableData[i].model_name,
             charger_id: this.tableData[i].charger_id,
             me_id: this.tableData[i].me_id,
             detail_place: this.tableData[i].detail_place,
             broken_part: this.tableData[i].broken_part,
             remark: this.tableData[i].remark,
             fixed_dt: this.tableData[i].fixed_dt,
-            manager_idx: this.tableData[i].manager_idx,
+            manager_name: this.tableData[i].manager_name,
             create_dt: this.tableData[i].create_dt,
             modify_dt: this.tableData[i].modify_dt,
           });

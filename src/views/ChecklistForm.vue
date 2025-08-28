@@ -273,8 +273,8 @@ export default {
       for(var i=0; i<this.tableData.length;i++){
         this.excelData.push({
             idx: this.tableData[i].idx,
-            company_idx: this.tableData[i].company_idx,
-            manager_idx: this.tableData[i].manager_idx,
+            company_name: this.tableData[i].company_name,
+            manager_name: this.tableData[i].manager_name,
             checking_name: this.tableData[i].checking_name,
             row: this.tableData[i].row,
             col: this.tableData[i].col,
