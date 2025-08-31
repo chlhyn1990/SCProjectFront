@@ -158,19 +158,21 @@
         <button type="button" class="btn btn-dark"  @click="deleteData" data-dismiss="modal">삭제</button>
       </div>
     </div>
-    <h4 style="margin-top:80px;margin-bottom:40px;">
-      분전함 관리
-    </h4>
 
     <div class="row" style="margin-bottom:40px;">
       <div class="col-md-12">
+        <h4 style="margin-top:40px;margin-bottom:40px;">
         <a class="btn btn-primary add-btn" @click="addDistribution">분전함추가</a>
+        </h4>
       </div>
     </div>
 
     <div class="distributionBox">
       <div :class="'distribution' + index"  v-for="(distribution, index) in tableDataDistribution" :key="index">
-        <div class="row">
+        <h5 style="margin-top:40px;margin-bottom:40px;">
+          {{distribution.id}}분전함 관리
+        </h5>
+          <div class="row">
           <div class="col-md-3">
             <div class="form-group">
               <div class="input-group">
@@ -214,7 +216,116 @@
             <a class="btn btn-success remove-btn" @click="saveDistribution(index)">저장</a>
             <a class="btn btn-secondary remove-btn" @click="removeDistribution(index)">삭제</a>
           </div>
-        </div> 
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <h4>
+              <a class="btn btn-dark add-btn" @click="addCharger(index, distribution.idx)">충전기추가</a>
+              </h4>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="chargerBox col-md-12">
+              <div :class="'charger' + indexCharger"  v-for="(charger, indexCharger) in distribution.chargerList" :key="indexCharger">
+                <h6 style="margin-top:40px;margin-bottom:40px;">
+                {{charger.charger_id}}충전기 관리
+                </h6>
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                    <div class="input-group">
+                      <label class="labelModal" key="" for="charger_model_idx">모델</label>
+                      <select class="form-select form-select-lg" :id="'charger_model_idx_' + indexCharger" v-model="charger.charger_model_idx">
+                        <option :value=row.idx v-for="(row, indexModel) in tableDataModel" :key="indexModel">{{row.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <label class="labelModal" key="" for="charger_id">아이디</label>
+                      <input 
+                        type="text" 
+                        :id="'charger_id_' + indexCharger" 
+                        class="form-control"
+                        v-model="charger.charger_id"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <label class="labelModal" key="" for="me_id">환경부</label>
+                      <input 
+                        type="text" 
+                        :id="'me_id_' + indexCharger" 
+                        class="form-control"
+                        v-model="charger.me_id"
+                      />
+                    </div>
+                  </div>
+                  </div>
+                  <div class="col-md-3">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <label class="labelModal" key="" for="detail_place">상세위치</label>
+                      <input 
+                        type="text" 
+                        :id="'detail_place_' + indexCharger" 
+                        class="form-control"
+                        v-model="charger.detail_place"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <label class="labelModal" key="" for="broken_part">파손부위</label>
+                      <input 
+                        type="text" 
+                        :id="'broken_part_' + indexCharger" 
+                        class="form-control"
+                        v-model="charger.broken_part"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <label class="labelModal" key="" for="remark">비고</label>
+                      <input 
+                        type="text" 
+                        :id="'remark_' + indexCharger" 
+                        class="form-control"
+                        v-model="charger.remark"
+                      />
+                    </div>
+                  </div>
+                  </div>
+                  <div class="col-md-3">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <label class="labelModal" key="" for="fixed_dt">수리일자</label>
+                      <VueDatePicker style="width:300px" :id="'fixed_dt_' + indexCharger"  v-model="charger.fixed_dt" format="yyyy-MM-dd"></VueDatePicker>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <label class="labelModal" key="" for="manager_idx">매니저</label>
+                      <select class="form-select form-select-lg" :id="'manager_idx_' + indexCharger" v-model="charger.manager_idx">
+                        <option :value=row.idx v-for="(row, indexManager) in tableDataManager" :key="indexManager">{{row.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  </div>
+                  <div class="col-md-3">
+                    <a class="btn btn-success remove-btn" @click="saveCharger(index, indexCharger)">저장</a>
+                    <a class="btn btn-secondary remove-btn" @click="removeCharger(index, indexCharger)">삭제</a>
+                  </div>
+   
+                </div>
+              </div>
+            </div>
+          </div>
+          
       </div>
     </div>
     
@@ -226,9 +337,11 @@ import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from 'vue-router'
 import axios from "axios";
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 export default {
-
+  components: { VueDatePicker },
   methods: {
     findAddress() {
       new window.daum.Postcode({
@@ -241,7 +354,6 @@ export default {
       }).open()
     },
     addDistribution(){
-      console.log('addDistribution');
       if(!this.selectedIdx){
         alert('충전소 저장 후 추가할 수 있습니다.');
         return;
@@ -249,13 +361,35 @@ export default {
       this.tableDataDistribution.push({
         id: '',
         name: '',
-        detail_place: ''
+        detail_place: '',
+        chargerList: [],
       });
     },
     removeDistribution(index) {
-      console.log('removeDistribution');
       this.deleteDataDistribution(index);
-    }
+    },
+
+    addCharger(index, distribution_idx){
+      if(!this.tableDataDistribution[index].idx){ 
+        alert('분전함 저장 후 추가할 수 있습니다.');
+        return;
+      }
+      this.tableDataDistribution[index].chargerList.push({
+        charger_station_idx: this.selectedIdx,
+        distribution_idx: distribution_idx,
+        charger_model_idx: '',
+        charger_id: '',
+        me_id: '',
+        detail_place: '',
+        broken_part: '',
+        remark: '',
+        fixed_dt: '',
+        manager_idx: '',
+      });
+    },
+    removeCharger(index, distribution_idx) {
+      this.deleteDataCharger(index, distribution_idx);
+    },
   },
   setup() {
     const coordinate = {
@@ -264,10 +398,13 @@ export default {
     };
     const route = useRoute();
     const router = useRouter();
+
     const tableData = ref([]); // 테이블 데이터를 저장할 ref
     const tableDataCompany = ref([]); // 테이블 데이터를 저장할 ref
     const tableDataManager = ref([]); // 테이블 데이터를 저장할 ref
     const tableDataDistribution = ref([]);
+    const tableDataModel = ref([]); // 테이블 데이터를 저장할 ref
+
     const getChargerStation = process.env.VUE_APP_API_BASE_URL + "/api/chargerStation/";
     const getCompanyList = process.env.VUE_APP_API_BASE_URL + "/api/company/list";
     const getManagerList = process.env.VUE_APP_API_BASE_URL + "/api/manager/list";
@@ -279,6 +416,11 @@ export default {
     const insertDistribution = process.env.VUE_APP_API_BASE_URL + "/api/distribution/insert";
     const updateDistribution = process.env.VUE_APP_API_BASE_URL + "/api/distribution/update";
     const deleteDistribution = process.env.VUE_APP_API_BASE_URL + "/api/distribution/delete/";
+
+    const getModelList = process.env.VUE_APP_API_BASE_URL + "/api/chargerModel/list";
+    const insertCharger = process.env.VUE_APP_API_BASE_URL + "/api/charger/insert";
+    const updateCharger = process.env.VUE_APP_API_BASE_URL + "/api/charger/update";
+    const deleteCharger = process.env.VUE_APP_API_BASE_URL + "/api/charger/delete/";
 
     const selectedIdx = ref(route.params.idx);
     const selectedCompanyIdx = ref(); // 선택된 행 데이터
@@ -299,8 +441,6 @@ export default {
     const selectedCreateDt = ref(); // 선택된 행 데이터
     const selectedModifyDt = ref(); // 선택된 행 데이터
 
-    
-
     const fetchData = () => {
       axios.post(getChargerStation + selectedIdx.value)
       .then(response=>{ 
@@ -318,9 +458,22 @@ export default {
         selectedDetailAddr.value = response.data.detail_addr;
         selectedLatitude.value = response.data.latitude;
         selectedLongitude.value = response.data.longitude;
+        fetchDataModel();
         fetchDataCompany();
         fetchDataDistribution();
         fetchDataManager();
+        
+      })
+      .catch(response=>{
+        console.error("데이터 요청 실패:", response.status);
+      });
+    };
+
+    const fetchDataModel = () => {
+      axios.post(getModelList)
+      .then(response=>{ 
+        tableDataModel.value = response.data; // 서버에서 받아온 데이터를 테이블에 반영
+        console.log(tableDataModel.value[0]);
       })
       .catch(response=>{
         console.error("데이터 요청 실패:", response.status);
@@ -331,7 +484,6 @@ export default {
       axios.post(getCompanyList)
       .then(response=>{ 
         tableDataCompany.value = response.data; // 서버에서 받아온 데이터를 테이블에 반영
-        console.log(tableDataCompany);
       })
       .catch(response=>{
         console.error("데이터 요청 실패:", response.status);
@@ -342,7 +494,6 @@ export default {
       axios.post(getDistribution + selectedIdx.value)
       .then(response=>{ 
         tableDataDistribution.value = response.data; // 서버에서 받아온 데이터를 테이블에 반영
-        console.log(tableDataDistribution);
       })
       .catch(response=>{
         console.error("데이터 요청 실패:", response.status);
@@ -353,18 +504,104 @@ export default {
       axios.post(getManagerList)
       .then(response=>{ 
         tableDataManager.value = response.data; // 서버에서 받아온 데이터를 테이블에 반영
-        console.log(tableDataManager);
       })
       .catch(response=>{
         console.error("데이터 요청 실패:", response.status);
       });
     };
 
+    const saveCharger = (index, indexCharger) => {
+      const charger = tableDataDistribution.value[index].chargerList[indexCharger];
+
+      if (!charger.charger_id || !charger.charger_model_idx || !charger.manager_idx) {
+        alert('충전기ID, 모델, 매니저는 필수 입력 항목입니다.');
+        return; 
+      }
+      
+      let reqUrl;
+      
+      if (charger.idx) {
+        reqUrl = updateCharger;
+      } else {
+        reqUrl = insertCharger;
+      }
+      
+      const options = {
+        headers: {
+          'content-type': 'application/json',
+          'x-api-key': ''
+        }
+      };
+
+      const date = new Date(charger.fixed_dt);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      const formattedDate = `${year}${month}${day}`;
+      
+      axios.post(reqUrl, {
+        idx: charger.idx, 
+        charger_station_idx: selectedIdx.value, 
+        distribution_idx: charger.distribution_idx, 
+        charger_model_idx: charger.charger_model_idx, 
+        charger_id: charger.charger_id, 
+        me_id: charger.me_id,
+        detail_place: charger.detail_place,
+        broken_part: charger.broken_part,
+        remark: charger.remark,
+        fixed_dt: formattedDate,
+        manager_idx: charger.manager_idx,
+        create_dt: charger.create_dt,
+        modify_dt: new Date().toISOString().split('T')[0] // 현재 시간으로 수정일자 업데이트
+      }, options)
+      .then(response => { 
+        console.log('충전기 저장 성공:', response.data);
+        
+        if (response.data.idx) {
+          tableDataDistribution.value[index].idx = response.data.idx;
+        }
+        alert('충전기 저장되었습니다');
+        fetchDataDistribution();
+      })
+      .catch(error => {
+        console.error("충전기 저장 실패:", error);
+        alert('충전기 저장에 실패했습니다');
+      });
+    };
+
+    const deleteDataCharger = (index, indexCharger) => {
+
+      const charger = tableDataDistribution.value[index].chargerList[indexCharger];
+      if (charger.idx != undefined) {
+        if (confirm('충전기를 삭제하겠습니까?')) {
+          const options = {
+            headers: {
+              'content-type': 'application/json',
+              'x-api-key': ''
+            }
+          };
+          
+          axios.post(deleteCharger + charger.idx, {}, options)
+            .then(response => {
+              console.log('충전기 삭제 성공:', response.data);
+              tableDataDistribution.value[index].chargerList.splice(indexCharger, 1);
+              alert('충전기가 삭제되었습니다');
+              fetchDataDistribution();
+            })
+            .catch(error => {
+              console.error('충전기 삭제 실패:', error);
+              alert('충전기 삭제에 실패했습니다');
+            });
+        }
+      } else {
+        // 아직 저장되지 않은 분전함은 그냥 제거
+        tableDataDistribution.value[index].chargerList.splice(indexCharger, 1);
+      }
+    };
+
     const saveDistribution = (index) => {
       const distribution = tableDataDistribution.value[index];
-      console.log(distribution);
-      
-      // 필수 필드 검증
+
       if (!distribution.id || !distribution.name) {
         alert('분전함 ID와 이름은 필수 입력 항목입니다.');
         return; 
@@ -372,7 +609,6 @@ export default {
       
       let reqUrl;
       
-      // 분전함에 idx가 있으면 업데이트, 없으면 새로 추가
       if (distribution.idx) {
         reqUrl = updateDistribution;
       } else {
@@ -386,7 +622,6 @@ export default {
         }
       };
       
-      // 분전함 데이터만 전송
       axios.post(reqUrl, {
         idx: distribution.idx, // 분전함 고유 ID (있으면 업데이트, 없으면 새로 생성)
         charger_station_idx: selectedIdx.value, // 소속 충전소 ID
@@ -399,7 +634,6 @@ export default {
       .then(response => { 
         console.log('분전함 저장 성공:', response.data);
         
-        // 서버에서 반환된 데이터로 분전함 정보 업데이트
         if (response.data.idx) {
           tableDataDistribution.value[index].idx = response.data.idx;
         }
@@ -415,7 +649,6 @@ export default {
     const deleteDataDistribution = (index) => {
       console.log('deleteDataDistribution', index);
       
-      // 분전함이 서버에 저장된 경우에만 삭제 API 호출
       const distribution = tableDataDistribution.value[index];
       if (distribution.idx != undefined) {
         if (confirm('분전함을 삭제하겠습니까?')) {
@@ -439,7 +672,6 @@ export default {
             });
         }
       } else {
-        // 아직 저장되지 않은 분전함은 그냥 제거
         tableDataDistribution.value.splice(index, 1);
       }
     };
@@ -495,21 +727,23 @@ export default {
     };
 
     const deleteData = () => {
-      const options = {
-                  headers: {
-                          'content-type' : 'application/json',
-                          'x-api-key' : ''
-                      }
-                  }
-      axios.post(deleteChargerStation+selectedIdx.value, options)
-      .then(response=>{ 
-        console.log(response.data); // 서버에서 받아온 데이터를 테이블에 반영
-        alert('삭제되었습니다');
-        router.push("/ChargerStationForm");
-      })
-      .catch(response=>{
-        console.error("데이터 요청 실패:", response.status);
-      });
+      if (confirm('충전소를 삭제하겠습니까?')) {
+        const options = {
+                    headers: {
+                            'content-type' : 'application/json',
+                            'x-api-key' : ''
+                        }
+                    }
+        axios.post(deleteChargerStation+selectedIdx.value, options)
+        .then(response=>{ 
+          console.log(response.data); // 서버에서 받아온 데이터를 테이블에 반영
+          alert('삭제되었습니다');
+          router.push("/ChargerStationForm");
+        })
+        .catch(response=>{
+          console.error("데이터 요청 실패:", response.status);
+        });
+      }
     };
 
     onMounted(() => {
@@ -519,6 +753,7 @@ export default {
       else{
         fetchDataCompany();
         fetchDataManager();
+        fetchDataModel();
       }
     });
     return {
@@ -526,6 +761,7 @@ export default {
       tableData,
       tableDataCompany,
       tableDataManager,
+      tableDataModel,
       saveData,
       deleteData,
       selectedIdx,
@@ -550,6 +786,8 @@ export default {
       tableDataDistribution,
       saveDistribution,
       deleteDataDistribution,
+      saveCharger,
+      deleteDataCharger,
     };
   },
 };
