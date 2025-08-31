@@ -170,7 +170,7 @@
     <div class="distributionBox">
       <div :class="'distribution' + index"  v-for="(distribution, index) in tableDataDistribution" :key="index">
         <h5 style="margin-top:40px;margin-bottom:40px;">
-          {{distribution.id}}분전함 관리
+          - {{distribution.id}} 분전함
         </h5>
           <div class="row">
           <div class="col-md-3">
@@ -230,7 +230,7 @@
             <div class="chargerBox col-md-12">
               <div :class="'charger' + indexCharger"  v-for="(charger, indexCharger) in distribution.chargerList" :key="indexCharger">
                 <h6 style="margin-top:40px;margin-bottom:40px;">
-                {{charger.charger_id}}충전기 관리
+                -- {{charger.charger_id}} 충전기
                 </h6>
                 <div class="row">
                   <div class="col-md-3">
