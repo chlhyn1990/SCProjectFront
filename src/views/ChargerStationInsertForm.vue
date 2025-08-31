@@ -149,9 +149,7 @@
         </div>
       </div>
       <div class="col-md-3">
-        <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true">
-          <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
-        </KakaoMap>
+        
         <button type="button" class="btn btn-success"  @click="saveData" data-dismiss="modal">저장</button>
         <button type="button" class="btn btn-dark"  @click="deleteData" data-dismiss="modal">삭제</button>
       </div>
@@ -168,7 +166,7 @@
     <div class="distributionBox">
       <div :class="'distribution' + index"  v-for="(distribution, index) in tableDataDistribution" :key="index">
         <h5 style="margin-top:40px;margin-bottom:40px;">
-          - {{distribution.id}} 분전함
+          - {{distribution.id}} 분전함 -
         </h5>
           <div class="row">
           <div class="col-md-3">
@@ -212,7 +210,7 @@
           </div>
           <div class="col-md-3">
             <a class="btn btn-success remove-btn" @click="saveDistribution(index)">저장</a>
-            <a class="btn btn-secondary remove-btn" @click="removeDistribution(index)">삭제</a>
+            <a class="btn btn-dark remove-btn" @click="removeDistribution(index)">삭제</a>
           </div>
           </div>
 
@@ -228,7 +226,7 @@
             <div class="chargerBox col-md-12">
               <div :class="'charger' + indexCharger"  v-for="(charger, indexCharger) in distribution.chargerList" :key="indexCharger">
                 <h6 style="margin-top:40px;margin-bottom:40px;">
-                --    {{charger.charger_id}} 충전기
+                -- {{charger.charger_id}} 충전기 --
                 </h6>
                 <div class="row">
                   <div class="col-md-3">
@@ -316,7 +314,7 @@
                   </div>
                   <div class="col-md-3">
                     <a class="btn btn-success remove-btn" @click="saveCharger(index, indexCharger)">저장</a>
-                    <a class="btn btn-secondary remove-btn" @click="removeCharger(index, indexCharger)">삭제</a>
+                    <a class="btn btn-dark remove-btn" @click="removeCharger(index, indexCharger)">삭제</a>
                   </div>
    
                 </div>
@@ -334,20 +332,38 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from 'vue-router'
 import axios from "axios";
-import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
 export default {
-  components: { VueDatePicker },
+  components: { VueDatePicker},
   methods: {
+    mapLoad(){
+
+    },
     findAddress() {
       new window.daum.Postcode({
         oncomplete: (data) => {
-          console.log("받은 주소 : ", data)
           this.selectedAddr = data.address;
           this.selectedSido = data.sido;
           this.selectedSigungu = data.sigungu;
+
+          const options = {
+            headers: {
+              'Authorization': 'KakaoAK 313b1fb40879bcd7f219e454c288ff55',
+            }
+          };
+          
+          axios.post(this.kakaoAPI + data.address, {}, options)
+            .then(response => {
+              const kakaoAPI = response.data;
+              this.selectedLongitude = kakaoAPI.documents[0].x;
+              this.selectedLatitude = kakaoAPI.documents[0].y;
+            })
+            .catch(error => {
+              console.error('kakao API 실패:', error);
+              alert('kakao API 실패');
+            });
         }
       }).open()
     },
@@ -420,6 +436,8 @@ export default {
     const updateCharger = process.env.VUE_APP_API_BASE_URL + "/api/charger/update";
     const deleteCharger = process.env.VUE_APP_API_BASE_URL + "/api/charger/delete/";
 
+    const kakaoAPI = "https://dapi.kakao.com/v2/local/search/address.json?query=";
+
     const selectedIdx = ref(route.params.idx);
     const selectedCompanyIdx = ref(); // 선택된 행 데이터
     const selectedManagerIdx = ref(); // 선택된 행 데이터
@@ -471,7 +489,6 @@ export default {
       axios.post(getModelList)
       .then(response=>{ 
         tableDataModel.value = response.data; // 서버에서 받아온 데이터를 테이블에 반영
-        console.log(tableDataModel.value[0]);
       })
       .catch(response=>{
         console.error("데이터 요청 실패:", response.status);
@@ -553,8 +570,6 @@ export default {
         modify_dt: new Date().toISOString().split('T')[0] // 현재 시간으로 수정일자 업데이트
       }, options)
       .then(response => { 
-        console.log('충전기 저장 성공:', response.data);
-        
         if (response.data.idx) {
           tableDataDistribution.value[index].idx = response.data.idx;
         }
@@ -562,8 +577,7 @@ export default {
         fetchDataDistribution();
       })
       .catch(error => {
-        console.error("충전기 저장 실패:", error);
-        alert('충전기 저장에 실패했습니다');
+        alert('충전기 저장에 실패했습니다', error);
       });
     };
 
@@ -581,14 +595,14 @@ export default {
           
           axios.post(deleteCharger + charger.idx, {}, options)
             .then(response => {
-              console.log('충전기 삭제 성공:', response.data);
+              console.log('삭제 완료:', response.data);
               tableDataDistribution.value[index].chargerList.splice(indexCharger, 1);
-              alert('충전기가 삭제되었습니다');
+              alert('삭제 완료');
               fetchDataDistribution();
             })
             .catch(error => {
-              console.error('충전기 삭제 실패:', error);
-              alert('충전기 삭제에 실패했습니다');
+              console.error('삭제 실패:', error);
+              alert('삭제 실패');
             });
         }
       } else {
@@ -630,23 +644,21 @@ export default {
         modify_dt: new Date().toISOString().split('T')[0] // 현재 시간으로 수정일자 업데이트
       }, options)
       .then(response => { 
-        console.log('분전함 저장 성공:', response.data);
+        console.log('저장 성공:', response.data);
         
         if (response.data.idx) {
           tableDataDistribution.value[index].idx = response.data.idx;
         }
-        alert('분전함이 저장되었습니다');
+        alert('저장 성공');
         fetchDataDistribution();
       })
       .catch(error => {
-        console.error("분전함 저장 실패:", error);
-        alert('분전함 저장에 실패했습니다');
+        console.error("저장 실패:", error);
+        alert('저장 실패');
       });
     };
 
     const deleteDataDistribution = (index) => {
-      console.log('deleteDataDistribution', index);
-      
       const distribution = tableDataDistribution.value[index];
       if (distribution.idx != undefined) {
         if (confirm('분전함을 삭제하겠습니까?')) {
@@ -659,14 +671,14 @@ export default {
           
           axios.post(deleteDistribution + distribution.idx, {}, options)
             .then(response => {
-              console.log('분전함 삭제 성공:', response.data);
+              console.log('삭제 성공:', response.data);
               tableDataDistribution.value.splice(index, 1);
-              alert('분전함이 삭제되었습니다');
+              alert('삭제 성공');
               fetchDataDistribution();
             })
             .catch(error => {
-              console.error('분전함 삭제 실패:', error);
-              alert('분전함 삭제에 실패했습니다');
+              console.error('삭제 실패:', error);
+              alert('삭제 실패');
             });
         }
       } else {
@@ -710,7 +722,7 @@ export default {
           }, options)
       .then(response=>{ 
         console.log(response.data); // 서버에서 받아온 데이터를 테이블에 반영
-        alert('저장되었습니다');
+        alert('저장 성공');
         if(reqUrl == insertChargerStation){
           selectedIdx.value = response.data;
           router.push("/ChargerStationInsertForm/" + selectedIdx.value);
@@ -735,7 +747,7 @@ export default {
         axios.post(deleteChargerStation+selectedIdx.value, options)
         .then(response=>{ 
           console.log(response.data); // 서버에서 받아온 데이터를 테이블에 반영
-          alert('삭제되었습니다');
+          alert('삭제 성공');
           router.push("/ChargerStationForm");
         })
         .catch(response=>{
@@ -780,12 +792,12 @@ export default {
       selectedResult,
       selectedCreateDt,
       selectedModifyDt,
-      KakaoMap, KakaoMapMarker,
       tableDataDistribution,
       saveDistribution,
       deleteDataDistribution,
       saveCharger,
       deleteDataCharger,
+      kakaoAPI,
     };
   },
 };
