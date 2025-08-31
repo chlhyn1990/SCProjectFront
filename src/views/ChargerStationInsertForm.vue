@@ -157,14 +157,73 @@
         <button type="button" class="btn btn-success"  @click="saveData" data-dismiss="modal">저장</button>
         <button type="button" class="btn btn-dark"  @click="deleteData" data-dismiss="modal">삭제</button>
       </div>
-
     </div>
+    <h4 style="margin-top:80px;margin-bottom:40px;">
+      분전함 관리
+    </h4>
+
+    <div class="row" style="margin-bottom:40px;">
+      <div class="col-md-12">
+        <a class="btn btn-primary add-btn" @click="addDistribution">분전함추가</a>
+      </div>
+    </div>
+
+    <div class="distributionBox">
+      <div :class="'distribution' + index"  v-for="(distribution, index) in tableDataDistribution" :key="index">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="input-group">
+                <label class="labelModal" :for="'dist_id_' + index">분전함ID</label>
+                <input 
+                  type="text" 
+                  :id="'dist_id_' + index" 
+                  class="form-control"
+                  v-model="distribution.id"
+                />
+              </div>
+            </div>  
+          </div>  
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="input-group">
+                <label class="labelModal" :for="'dist_name_' + index">분전함명</label>
+                <input 
+                  type="text" 
+                  :id="'dist_name_' + index" 
+                  class="form-control"
+                  v-model="distribution.name"
+                />
+              </div>
+            </div>       
+          </div>       
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="input-group">
+                <label class="labelModal" :for="'dist_detail_place_' + index">상세장소</label>
+                <input 
+                  type="text" 
+                  :id="'dist_detail_place_' + index" 
+                  class="form-control"
+                  v-model="distribution.detail_place"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <a class="btn btn-success remove-btn" @click="saveDistribution(index)">저장</a>
+            <a class="btn btn-secondary remove-btn" @click="removeDistribution(index)">삭제</a>
+          </div>
+        </div> 
+      </div>
+    </div>
+    
   </div>
 </template>
 
 <script>
 import { ref, onMounted } from "vue";
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import axios from "axios";
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 
@@ -181,6 +240,22 @@ export default {
         }
       }).open()
     },
+    addDistribution(){
+      console.log('addDistribution');
+      if(!this.selectedIdx){
+        alert('충전소 저장 후 추가할 수 있습니다.');
+        return;
+      }
+      this.tableDataDistribution.push({
+        id: '',
+        name: '',
+        detail_place: ''
+      });
+    },
+    removeDistribution(index) {
+      console.log('removeDistribution');
+      this.deleteDataDistribution(index);
+    }
   },
   setup() {
     const coordinate = {
@@ -188,15 +263,22 @@ export default {
       lng: 126.570667
     };
     const route = useRoute();
+    const router = useRouter();
     const tableData = ref([]); // 테이블 데이터를 저장할 ref
     const tableDataCompany = ref([]); // 테이블 데이터를 저장할 ref
     const tableDataManager = ref([]); // 테이블 데이터를 저장할 ref
+    const tableDataDistribution = ref([]);
     const getChargerStation = process.env.VUE_APP_API_BASE_URL + "/api/chargerStation/";
     const getCompanyList = process.env.VUE_APP_API_BASE_URL + "/api/company/list";
     const getManagerList = process.env.VUE_APP_API_BASE_URL + "/api/manager/list";
     const insertChargerStation = process.env.VUE_APP_API_BASE_URL + "/api/chargerStation/insert";
     const updateChargerStation = process.env.VUE_APP_API_BASE_URL + "/api/chargerStation/update";
     const deleteChargerStation = process.env.VUE_APP_API_BASE_URL + "/api/chargerStation/delete/";
+
+    const getDistribution = process.env.VUE_APP_API_BASE_URL + "/api/distribution/list/";
+    const insertDistribution = process.env.VUE_APP_API_BASE_URL + "/api/distribution/insert";
+    const updateDistribution = process.env.VUE_APP_API_BASE_URL + "/api/distribution/update";
+    const deleteDistribution = process.env.VUE_APP_API_BASE_URL + "/api/distribution/delete/";
 
     const selectedIdx = ref(route.params.idx);
     const selectedCompanyIdx = ref(); // 선택된 행 데이터
@@ -217,6 +299,8 @@ export default {
     const selectedCreateDt = ref(); // 선택된 행 데이터
     const selectedModifyDt = ref(); // 선택된 행 데이터
 
+    
+
     const fetchData = () => {
       axios.post(getChargerStation + selectedIdx.value)
       .then(response=>{ 
@@ -234,6 +318,9 @@ export default {
         selectedDetailAddr.value = response.data.detail_addr;
         selectedLatitude.value = response.data.latitude;
         selectedLongitude.value = response.data.longitude;
+        fetchDataCompany();
+        fetchDataDistribution();
+        fetchDataManager();
       })
       .catch(response=>{
         console.error("데이터 요청 실패:", response.status);
@@ -251,6 +338,17 @@ export default {
       });
     };
 
+    const fetchDataDistribution = () => {
+      axios.post(getDistribution + selectedIdx.value)
+      .then(response=>{ 
+        tableDataDistribution.value = response.data; // 서버에서 받아온 데이터를 테이블에 반영
+        console.log(tableDataDistribution);
+      })
+      .catch(response=>{
+        console.error("데이터 요청 실패:", response.status);
+      });
+    };
+
     const fetchDataManager = () => {
       axios.post(getManagerList)
       .then(response=>{ 
@@ -260,6 +358,90 @@ export default {
       .catch(response=>{
         console.error("데이터 요청 실패:", response.status);
       });
+    };
+
+    const saveDistribution = (index) => {
+      const distribution = tableDataDistribution.value[index];
+      console.log(distribution);
+      
+      // 필수 필드 검증
+      if (!distribution.id || !distribution.name) {
+        alert('분전함 ID와 이름은 필수 입력 항목입니다.');
+        return; 
+      }
+      
+      let reqUrl;
+      
+      // 분전함에 idx가 있으면 업데이트, 없으면 새로 추가
+      if (distribution.idx) {
+        reqUrl = updateDistribution;
+      } else {
+        reqUrl = insertDistribution;
+      }
+      
+      const options = {
+        headers: {
+          'content-type': 'application/json',
+          'x-api-key': ''
+        }
+      };
+      
+      // 분전함 데이터만 전송
+      axios.post(reqUrl, {
+        idx: distribution.idx, // 분전함 고유 ID (있으면 업데이트, 없으면 새로 생성)
+        charger_station_idx: selectedIdx.value, // 소속 충전소 ID
+        id: distribution.id, // 분전함 ID
+        name: distribution.name, // 분전함명
+        detail_place: distribution.detail_place, // 상세장소
+        create_dt: distribution.create_dt,
+        modify_dt: new Date().toISOString().split('T')[0] // 현재 시간으로 수정일자 업데이트
+      }, options)
+      .then(response => { 
+        console.log('분전함 저장 성공:', response.data);
+        
+        // 서버에서 반환된 데이터로 분전함 정보 업데이트
+        if (response.data.idx) {
+          tableDataDistribution.value[index].idx = response.data.idx;
+        }
+        alert('분전함이 저장되었습니다');
+        fetchDataDistribution();
+      })
+      .catch(error => {
+        console.error("분전함 저장 실패:", error);
+        alert('분전함 저장에 실패했습니다');
+      });
+    };
+
+    const deleteDataDistribution = (index) => {
+      console.log('deleteDataDistribution', index);
+      
+      // 분전함이 서버에 저장된 경우에만 삭제 API 호출
+      const distribution = tableDataDistribution.value[index];
+      if (distribution.idx != undefined) {
+        if (confirm('분전함을 삭제하겠습니까?')) {
+          const options = {
+            headers: {
+              'content-type': 'application/json',
+              'x-api-key': ''
+            }
+          };
+          
+          axios.post(deleteDistribution + distribution.idx, {}, options)
+            .then(response => {
+              console.log('분전함 삭제 성공:', response.data);
+              tableDataDistribution.value.splice(index, 1);
+              alert('분전함이 삭제되었습니다');
+              fetchDataDistribution();
+            })
+            .catch(error => {
+              console.error('분전함 삭제 실패:', error);
+              alert('분전함 삭제에 실패했습니다');
+            });
+        }
+      } else {
+        // 아직 저장되지 않은 분전함은 그냥 제거
+        tableDataDistribution.value.splice(index, 1);
+      }
     };
 
     const saveData = () => {
@@ -299,7 +481,13 @@ export default {
       .then(response=>{ 
         console.log(response.data); // 서버에서 받아온 데이터를 테이블에 반영
         alert('저장되었습니다');
-        fetchData();
+        if(reqUrl == insertChargerStation){
+          selectedIdx.value = response.data;
+          router.push("/ChargerStationInsertForm/" + selectedIdx.value);
+          fetchData();
+        }else{
+          fetchData();
+        }
       })
       .catch(response=>{
         console.error("데이터 요청 실패:", response.status);
@@ -317,7 +505,7 @@ export default {
       .then(response=>{ 
         console.log(response.data); // 서버에서 받아온 데이터를 테이블에 반영
         alert('삭제되었습니다');
-        fetchData();
+        router.push("/ChargerStationForm");
       })
       .catch(response=>{
         console.error("데이터 요청 실패:", response.status);
@@ -325,10 +513,13 @@ export default {
     };
 
     onMounted(() => {
-      if(route.params.idx != undefined)
+      if(route.params.idx != undefined){
         fetchData();
-      fetchDataCompany();
-      fetchDataManager();
+      }
+      else{
+        fetchDataCompany();
+        fetchDataManager();
+      }
     });
     return {
       coordinate,
@@ -356,6 +547,9 @@ export default {
       selectedCreateDt,
       selectedModifyDt,
       KakaoMap, KakaoMapMarker,
+      tableDataDistribution,
+      saveDistribution,
+      deleteDataDistribution,
     };
   },
 };
@@ -364,6 +558,14 @@ export default {
 <style>
 .btn{
   margin-left:10px;
+}
+.add-btn{
+  float:left;
+  margin: 0px 0px 10px 10px;
+}
+.remove-btn{
+  float:left;
+  margin: 0px 0px 10px 10px;
 }
 select{
     width: 240px;

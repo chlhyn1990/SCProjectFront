@@ -29,9 +29,6 @@
             <router-link to="/ChargerModelForm" @click="closeMenu">충전기모델</router-link>
         </li>
         <li>
-            <router-link to="/ChargerForm" @click="closeMenu">충전기</router-link>
-        </li>
-        <li>
             <router-link to="/ChargerStationForm" @click="closeMenu">충전소</router-link>
         </li>
         <li>
