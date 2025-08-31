@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4 style="margin-bottom:80px;">
+    <h4 style="margin-bottom:40px;">
       {{selectedName}} 충전소 관리
     </h4>
     <div class="row">
@@ -152,8 +152,6 @@
         <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true">
           <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
         </KakaoMap>
-      </div>
-      <div class="col-md-12">
         <button type="button" class="btn btn-success"  @click="saveData" data-dismiss="modal">저장</button>
         <button type="button" class="btn btn-dark"  @click="deleteData" data-dismiss="modal">삭제</button>
       </div>
@@ -230,7 +228,7 @@
             <div class="chargerBox col-md-12">
               <div :class="'charger' + indexCharger"  v-for="(charger, indexCharger) in distribution.chargerList" :key="indexCharger">
                 <h6 style="margin-top:40px;margin-bottom:40px;">
-                -- {{charger.charger_id}} 충전기
+                --    {{charger.charger_id}} 충전기
                 </h6>
                 <div class="row">
                   <div class="col-md-3">
