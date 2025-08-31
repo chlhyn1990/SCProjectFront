@@ -350,7 +350,7 @@ export default {
 
           const options = {
             headers: {
-              'Authorization': 'KakaoAK 313b1fb40879bcd7f219e454c288ff55',
+              'Authorization': 'KakaoAK ' + this.kakaoRestKey,
             }
           };
           
@@ -437,6 +437,7 @@ export default {
     const deleteCharger = process.env.VUE_APP_API_BASE_URL + "/api/charger/delete/";
 
     const kakaoAPI = "https://dapi.kakao.com/v2/local/search/address.json?query=";
+    const kakaoRestKey = "313b1fb40879bcd7f219e454c288ff55";
 
     const selectedIdx = ref(route.params.idx);
     const selectedCompanyIdx = ref(); // 선택된 행 데이터
@@ -798,6 +799,7 @@ export default {
       saveCharger,
       deleteDataCharger,
       kakaoAPI,
+      kakaoRestKey,
     };
   },
 };
