@@ -19,6 +19,7 @@
           <th>회사</th>
           <th>매니저</th>
           <th>항목명</th>
+          <th>시트</th>
           <th>행</th>
           <th>열</th>
           <th>순서</th>
@@ -44,6 +45,7 @@
             {{ row.checking_name }}
             </button>
           </td>
+          <td>{{ row.page }}</td>
           <td>{{ row.row }}</td>
           <td>{{ row.col }}</td>
           <td>{{ row.ord }}</td>
@@ -83,6 +85,17 @@
                   id="checking_name" 
                   class="form-control"
                   v-model="selectedCheckingName"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <label class="labelModal" key="" for="page">시트</label>
+                <input 
+                  type="text" 
+                  id="page" 
+                  class="form-control"
+                  v-model="selectedPage"
                 />
               </div>
             </div>
@@ -198,6 +211,17 @@
             </div>
             <div class="form-group">
               <div class="input-group">
+                <label class="labelModal" key="" for="page">시트</label>
+                <input 
+                  type="text" 
+                  id="page" 
+                  class="form-control"
+                  v-model="selectedPage"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
                 <label class="labelModal" key="" for="row">행</label>
                 <input 
                   type="text" 
@@ -276,6 +300,7 @@ export default {
             company_name: this.tableData[i].company_name,
             manager_name: this.tableData[i].manager_name,
             checking_name: this.tableData[i].checking_name,
+            page: this.tableData[i].page,
             row: this.tableData[i].row,
             col: this.tableData[i].col,
             ord: this.tableData[i].ord,
@@ -308,6 +333,7 @@ export default {
     const selectedCompanyIdx = ref(); // 선택된 행 데이터
     const selectedManagerIdx = ref(); // 선택된 행 데이터
     const selectedCheckingName = ref(); // 선택된 행 데이터
+    const selectedPage = ref(); // 선택된 행 데이터
     const selectedRow = ref(); // 선택된 행 데이터
     const selectedCol = ref(); // 선택된 행 데이터
     const selectedOrd = ref(); // 선택된 행 데이터
@@ -323,6 +349,7 @@ export default {
       selectedCompanyIdx.value = row.company_idx; // 선택한 행 데이터 복사
       selectedManagerIdx.value = row.manager_idx; // 선택한 행 데이터 복사
       selectedCheckingName.value = row.checking_name; // 선택한 행 데이터 복사
+      selectedPage.value = row.page;
       selectedRow.value = row.row; // 선택한 행 데이터 복사
       selectedCol.value = row.col; // 선택한 행 데이터 복사
       selectedOrd.value = row.ord; // 선택한 행 데이터 복사
@@ -408,6 +435,7 @@ export default {
             company_idx: selectedCompanyIdx.value,
             manager_idx: selectedManagerIdx.value,
             checking_name: selectedCheckingName.value,
+            page: selectedPage.value,
             row: selectedRow.value,
             col: selectedCol.value,
             ord: selectedOrd.value,
@@ -460,6 +488,7 @@ export default {
       selectedCompanyIdx,
       selectedManagerIdx,
       selectedCheckingName,
+      selectedPage,
       selectedRow,
       selectedCol,
       selectedOrd,
