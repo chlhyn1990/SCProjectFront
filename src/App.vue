@@ -32,7 +32,7 @@
             <router-link to="/ChargerStationForm" @click="closeMenu">충전소</router-link>
         </li>
         <li>
-            <router-link to="/ChecklistForm" @click="closeMenu">체크리스트</router-link>
+            <router-link to="/ChecklistForm" @click="closeMenu">점검표</router-link>
         </li>
         <li>
             <router-link to="/" class="login-btn" @click="closeMenuLogin" v-if="id == null">로그인</router-link>
