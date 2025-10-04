@@ -18,10 +18,6 @@
           <th>회사</th>
           <th>매니저</th>
           <th>충전소</th>
-          <th>분전함</th>
-          <th>점검일자</th>
-          <th>주변온도/습도</th>
-          <th>정산여부</th>
           <th>등록일</th>
           <th>수정일</th>
         </tr>
@@ -32,11 +28,7 @@
           <td>{{ row.idx }}</td>
           <td>{{ row.company_name }}</td>
           <td>{{ row.manager_name }}</td>
-          <td>{{ row.charger_station_name }}</td>
-          <td>{{ row.distribution_name }}</td>
-          <td>{{ row.check_dt }}</td>
-          <td>{{ row.temperature }}</td>
-          <td>{{ row.adjustment }}</td>
+          <td><router-link :to="`/ChecklistInsertForm/${ row.idx }`">{{ row.name }}</router-link></td>
           <td>{{ row.create_dt }}</td>
           <td>{{ row.modify_dt }}</td>
         </tr>
@@ -66,10 +58,6 @@ export default {
             company_name: this.tableData[i].company_name,
             manager_name: this.tableData[i].manager_name,
             charger_station_name: this.tableData[i].charger_station_name,
-            distribution_name: this.tableData[i].distribution_name,
-            check_dt: this.tableData[i].check_dt,
-            temperature: this.tableData[i].temperature,
-            adjustment: this.tableData[i].adjustment,
             create_dt: this.tableData[i].create_dt,
             modify_dt: this.tableData[i].modify_dt,
           });
@@ -84,17 +72,8 @@ export default {
     const searchCompany = ref("");
     const searchManager = ref("");
     const searchChargerStation = ref("");
-    const searchName = ref("");
     const tableData = ref([]); // 테이블 데이터를 저장할 ref
-    const tableDataCompany = ref([]); // 테이블 데이터를 저장할 ref
-    const tableDataManager = ref([]); // 테이블 데이터를 저장할 ref
-    const tableDataChargerStation = ref([]); // 테이블 데이터를 저장할 ref
-    const tableDataDistribution = ref([]); // 테이블 데이터를 저장할 ref
-    const getCheckListList = process.env.VUE_APP_API_BASE_URL + "/api/checkList/list";
-    const getCompanyList = process.env.VUE_APP_API_BASE_URL + "/api/company/list";
-    const getManagerList = process.env.VUE_APP_API_BASE_URL + "/api/manager/list";
     const getChargerStationList = process.env.VUE_APP_API_BASE_URL + "/api/chargerStation/list";
-    const getDistributionList = process.env.VUE_APP_API_BASE_URL + "/api/distribution/list";
 
     const selectedIdx = ref(); // 선택된 행 데이터
 
@@ -108,9 +87,9 @@ export default {
       const search = {
         searchCompany: searchCompany.value,
         searchManager: searchManager.value,
-        searchName: searchName.value,
+        searchChargerStation: searchChargerStation.value,
       }
-      axios.post(getCheckListList, search, options)
+      axios.post(getChargerStationList, search, options)
       .then(response=>{ 
         if(response.data.length == 0){
           alert('조회 데이터가 없습니다');
@@ -124,7 +103,18 @@ export default {
     };
 
     const fetchData = () => {
-      axios.post(getCheckListList)
+      const options = {
+                  headers: {
+                          'content-type' : 'application/json',
+                          'x-api-key' : ''
+                      }
+                  }
+      const search = {
+        searchCompany: searchCompany.value,
+        searchManager: searchManager.value,
+        searchChargerStation: searchChargerStation.value,
+      }
+      axios.post(getChargerStationList, search, options)
       .then(response=>{ 
         tableData.value = response.data; // 서버에서 받아온 데이터를 테이블에 반영
       })
@@ -133,66 +123,14 @@ export default {
       });
     };
 
-    const fetchDataCompany = () => {
-      axios.post(getCompanyList)
-      .then(response=>{ 
-        tableDataCompany.value = response.data; // 서버에서 받아온 데이터를 테이블에 반영
-        console.log(tableDataCompany);
-      })
-      .catch(response=>{
-        console.error("데이터 요청 실패:", response.status);
-      });
-    };
-
-    const fetchDataChargerStation = () => {
-      axios.post(getChargerStationList)
-      .then(response=>{ 
-        tableDataChargerStation.value = response.data; // 서버에서 받아온 데이터를 테이블에 반영
-        console.log(tableDataChargerStation);
-      })
-      .catch(response=>{
-        console.error("데이터 요청 실패:", response.status);
-      });
-    };
-
-    const fetchDataDistribution = () => {
-      axios.post(getDistributionList)
-      .then(response=>{ 
-        tableDataDistribution.value = response.data; // 서버에서 받아온 데이터를 테이블에 반영
-        console.log(tableDataDistribution);
-      })
-      .catch(response=>{
-        console.error("데이터 요청 실패:", response.status);
-      });
-    };
-
-    const fetchDataManager = () => {
-      axios.post(getManagerList)
-      .then(response=>{ 
-        tableDataManager.value = response.data; // 서버에서 받아온 데이터를 테이블에 반영
-        console.log(tableDataManager);
-      })
-      .catch(response=>{
-        console.error("데이터 요청 실패:", response.status);
-      });
-    };
 
     onMounted(() => {
       fetchData(); // 컴포넌트 마운트 시 데이터 가져오기
-      fetchDataCompany();
-      fetchDataManager();
-      fetchDataChargerStation();
-      fetchDataDistribution();
     });
 
     return {
       tableData,
-      tableDataCompany,
-      tableDataManager,
-      tableDataChargerStation,
-      tableDataDistribution,
       selectedIdx,
-      searchName,
       searchCompany,
       searchManager,
       searchChargerStation,

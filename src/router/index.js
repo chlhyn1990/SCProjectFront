@@ -22,7 +22,7 @@ const routes = [
   { path: "/ManagerGradeForm", name: "ManagerGradeForm", component: ManagerGradeForm },
   { path: "/ChargerModelForm", name: "ChargerModelForm", component: ChargerModelForm },
   { path: "/ChecklistForm", name: "ChecklistForm", component: ChecklistForm },
-  { path: "/ChecklistInsertForm", name: "ChecklistInsertForm", component: ChecklistInsertForm },
+  { path: "/ChecklistInsertForm/:idx", name: "ChecklistInsertForm", component: ChecklistInsertForm, props: true },
   { path: "/ChargerStationForm", name: "ChargerStationForm", component: ChargerStationForm },
   { path: '/ChargerStationInsertForm/:idx', name: 'ChargerStationInsertForm', component: ChargerStationInsertForm, props: true },
   { path: '/ChargerStationInsertFormNew', name: 'ChargerStationInsertFormNew', component: ChargerStationInsertForm }

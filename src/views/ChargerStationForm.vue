@@ -113,7 +113,12 @@ export default {
                           'x-api-key' : ''
                       }
                   }
-      axios.post(getChargerStationList+'/'+search.value,options)
+      const searchChargerStation = {
+        searchCompany: '',
+        searchManager: '',
+        searchChargerStation: search.value,
+      }                  
+      axios.post(getChargerStationList, searchChargerStation, options)
       .then(response=>{ 
         if(response.data.length == 0){
           alert('조회 데이터가 없습니다');
@@ -127,7 +132,18 @@ export default {
     };
 
     const fetchData = () => {
-      axios.post(getChargerStationList)
+      const options = {
+                  headers: {
+                          'content-type' : 'application/json',
+                          'x-api-key' : ''
+                      }
+                  }
+      const searchChargerStation = {
+        searchCompany: '',
+        searchManager: '',
+        searchChargerStation: search.value,
+      }                  
+      axios.post(getChargerStationList, searchChargerStation, options)
       .then(response=>{ 
         tableData.value = response.data; // 서버에서 받아온 데이터를 테이블에 반영
       })
