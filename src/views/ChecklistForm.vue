@@ -28,7 +28,7 @@
           <td>{{ row.idx }}</td>
           <td>{{ row.company_name }}</td>
           <td>{{ row.manager_name }}</td>
-          <td><router-link :to="`/ChecklistInsertForm/${ row.idx }`">{{ row.name }}</router-link></td>
+          <td><router-link :to="`/CheckMstlistForm/${ row.idx }`">{{ row.name }}</router-link></td>
           <td>{{ row.create_dt }}</td>
           <td>{{ row.modify_dt }}</td>
         </tr>

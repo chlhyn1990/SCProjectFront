@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4 style="margin-bottom:40px;">
-      {{selectedName}} 충전소 관리
+      {{selectedName}} 충전소 등록
     </h4>
     <div class="row">
       <div class="col-md-3">
@@ -808,6 +808,13 @@ export default {
 </script>
 
 <style>
+.dp--clear-btn{
+  display: none;
+}
+.dp__main {
+  width:auto;
+  margin: 0px auto;
+}
 .btn{
   margin-left:10px;
 }

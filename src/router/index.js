@@ -8,7 +8,8 @@ import ManagerForm from "../views/ManagerForm.vue";
 import ManagerGradeForm from "../views/ManagerGradeForm.vue";
 import ChargerModelForm from "../views/ChargerModelForm.vue";
 import ChecklistForm from "../views/ChecklistForm.vue";
-import ChecklistInsertForm from "../views/ChecklistInsertForm.vue";
+import CheckMstlistForm from "../views/CheckMstlistForm.vue";
+import CheckInsertForm from "../views/CheckInsertForm.vue";
 import ChargerStationForm from "../views/ChargerStationForm.vue";
 import ChargerStationInsertForm from "../views/ChargerStationInsertForm.vue";
 
@@ -22,7 +23,8 @@ const routes = [
   { path: "/ManagerGradeForm", name: "ManagerGradeForm", component: ManagerGradeForm },
   { path: "/ChargerModelForm", name: "ChargerModelForm", component: ChargerModelForm },
   { path: "/ChecklistForm", name: "ChecklistForm", component: ChecklistForm },
-  { path: "/ChecklistInsertForm/:idx", name: "ChecklistInsertForm", component: ChecklistInsertForm, props: true },
+  { path: "/CheckMstlistForm/:idx", name: "CheckMstlistForm", component: CheckMstlistForm, props: true  },
+  { path: "/CheckInsertForm/:idx", name: "CheckInsertForm", component: CheckInsertForm, props: true },
   { path: "/ChargerStationForm", name: "ChargerStationForm", component: ChargerStationForm },
   { path: '/ChargerStationInsertForm/:idx', name: 'ChargerStationInsertForm', component: ChargerStationInsertForm, props: true },
   { path: '/ChargerStationInsertFormNew', name: 'ChargerStationInsertFormNew', component: ChargerStationInsertForm }
