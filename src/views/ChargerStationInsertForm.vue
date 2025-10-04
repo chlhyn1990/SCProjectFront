@@ -636,6 +636,8 @@ export default {
       };
       
       axios.post(reqUrl, {
+        company_idx: selectedCompanyIdx.value,
+        manager_idx: selectedManagerIdx.value,
         idx: distribution.idx, // 분전함 고유 ID (있으면 업데이트, 없으면 새로 생성)
         charger_station_idx: selectedIdx.value, // 소속 충전소 ID
         id: distribution.id, // 분전함 ID
